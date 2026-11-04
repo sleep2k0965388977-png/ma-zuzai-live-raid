@@ -562,3 +562,20 @@
      - **Đồng bộ giao diện UI**:
        - Cập nhật hiển thị giai đoạn thành: `🔥 GIAI ĐOẠN 01 / 02 · PHONG ẤN` -> sau khi hồi máu 50% chuyển sang `🔥 GIAI ĐOẠN 02 / 02 · THỨC TỈNH`.
        - Thanh máu mượt mà chuyển động từ mốc 25% mở rộng chạm đến mốc kim cương 50% ở giữa.
+
+---
+
+## 34. Khôi Phục Góc Quay Toàn Cảnh Mặc Định (40m) & Gỡ Bỏ Quy Tắc Dưới 100 Người
+- **Yêu cầu từ người dùng**:
+  > *"bỏ cái quy luật dưới 100 người đi để mặc định giống như trước cho t kiểu toàn cảnh ý"*
+- **Nội dung điều chỉnh chuẩn xác**:
+  1. **Gỡ bỏ quy tắc thích ứng dưới 100 người**:
+     - Loại bỏ hoàn toàn phương thức tự động thu hẹp góc máy `18m` khi số người tham gia <= 100.
+  2. **Khôi phục góc quay toàn cảnh mặc định nguyên bản**:
+     - Góc quay chính diện mặc định trở về toàn cảnh bao quát hùng tráng (`z = 40.0m`, `y = 14.5m`, `lookAt: (0, 6.0, -1.8)`).
+     - Bao quát trọn vẹn toàn bộ đấu trường ma giới, 4 cột đền cổ kính, quầng sáng của Boss và toàn bộ các hàng ghế của quân đoàn tu sĩ.
+  3. **Khôi phục cơ chế tự động trả về toàn cảnh sau chiêu thức**:
+     - Sau khi người chơi thực hiện xong đòn chém hoặc tuyệt kỹ bay lượn cận cảnh, camera tự động lướt lùi về góc toàn cảnh `Chính diện` (40m).
+  4. **Cập nhật giao diện thanh điều khiển góc quay**:
+     - Nhãn trạng thái: `Mặc định: Toàn cảnh (40m)` màu xanh lục bảo nổi bật.
+     - Các nút zoom góc quay chuẩn: `[ 🌐 Toàn Cảnh (40m) ]`, `[ 🛡️ Toàn Đội (18m) ]`, `[ ⚔️ Cận Cảnh (11m) ]`, `[ 🔍 Siêu Sát (8m) ]`.
