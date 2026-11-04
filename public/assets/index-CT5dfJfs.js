@@ -5056,7 +5056,7 @@ this.brazierLights&&this.brazierLights.forEach((blt,idx)=>{blt.intensity=4.2+Mat
       this.playClip(o.mixer,o.clips??[],"idle");
     }
   }
-}else o.root.position.y=o.home.y+Math.sin(s*2+o.home.x)*.025,o.root.rotation.z=c.hp<=0?-.65:Math.sin(s+o.home.z)*.012;const f=this.labelNodes.get(l);if(f){if(!this._lblVec)this._lblVec=new B;const h=this._lblVec.copy(o.root.position);h.y+=1.55;h.project(this.camera);f.style.left=`${(h.x*.5+.5)*100}%`,f.style.top=`${(-h.y*.5+.5)*100}%`,f.style.opacity=h.z<1?"1":"0",c.hp<=0?f.classList.add("down"):f.classList.remove("down")}}),this.bursts=this.bursts.filter(o=>{o.age+=e;const l=o.age/o.duration,c=o.group.children[0];c.scale.setScalar(1+l*8),c.material.opacity=1-l;const f=o.group.children[1],u=f.geometry.attributes.position;for(let h=0;h<u.count;h++){const d=o.velocity[h];u.setXYZ(h,d.x*o.age,d.y*o.age-o.age*o.age*.4,d.z*o.age)}if(u.needsUpdate=!0,f.material.opacity=1-l,o.group.children[2]){const h=o.group.children[2];h.material.opacity=(1-l)*.5,h.scale.x=1+Math.sin(o.age*18)*.3}return l>=1?(this.scene.remove(o.group),this.disposeObject(o.group),!1):!0});if(this.targetActor&&this.targetActor.root&&this.cameraTimer>0){const curP=this.targetActor.root.position;this.lookTarget.lerp(Ft(curP.x,curP.y+1.1,curP.z),1-Math.exp(-e*6));const isGift=this.targetActor.isGift||this.targetActor.skill!=="attack",camDistZ=isGift?5.6:4.8,camElevY=isGift?Math.max(3.2,curP.y-0.4):Math.max(2.4,curP.y+0.2),sideX=(curP.x>=0?1.5:-1.5)*(isGift?0.8:0.6),targetCamPos=Ft(curP.x*0.4+sideX,camElevY,curP.z+camDistZ);this.cameraTarget.lerp(targetCamPos,1-Math.exp(-e*5.5));}this.cameraTimer-=e,this.cameraTimer<=0&&this.state.camera!=="Chính diện"&&(this.targetActor=null,this.setCamera("main")),this.camera.position.lerp(this.cameraTarget,1-Math.exp(-e*3.5)),this.camera.lookAt(this.lookTarget),
+}else o.root.position.y=o.home.y+Math.sin(s*2+o.home.x)*.025,o.root.rotation.z=c.hp<=0?-.65:Math.sin(s+o.home.z)*.012;const f=this.labelNodes.get(l);if(f){if(!this._lblVec)this._lblVec=new B;const h=this._lblVec.copy(o.root.position);h.y+=1.55;h.project(this.camera);f.style.left=`${(h.x*.5+.5)*100}%`,f.style.top=`${(-h.y*.5+.5)*100}%`,f.style.opacity=h.z<1?"1":"0",c.hp<=0?f.classList.add("down"):f.classList.remove("down")}}),this.bursts=this.bursts.filter(o=>{o.age+=e;const l=o.age/o.duration,c=o.group.children[0];c.scale.setScalar(1+l*8),c.material.opacity=1-l;const f=o.group.children[1],u=f.geometry.attributes.position;for(let h=0;h<u.count;h++){const d=o.velocity[h];u.setXYZ(h,d.x*o.age,d.y*o.age-o.age*o.age*.4,d.z*o.age)}if(u.needsUpdate=!0,f.material.opacity=1-l,o.group.children[2]){const h=o.group.children[2];h.material.opacity=(1-l)*.5,h.scale.x=1+Math.sin(o.age*18)*.3}return l>=1?(this.scene.remove(o.group),this.disposeObject(o.group),!1):!0});if(this.targetActor&&this.targetActor.root&&this.cameraTimer>0){const curP=this.targetActor.root.position;this.lookTarget.lerp(Ft(curP.x,curP.y+1.1,curP.z),1-Math.exp(-e*6));const isGift=this.targetActor.isGift||this.targetActor.skill!=="attack",camDistZ=isGift?5.6:4.8,camElevY=isGift?Math.max(3.2,curP.y-0.4):Math.max(2.4,curP.y+0.2),sideX=(curP.x>=0?1.5:-1.5)*(isGift?0.8:0.6),targetCamPos=Ft(curP.x*0.4+sideX,camElevY,curP.z+camDistZ);this.cameraTarget.lerp(targetCamPos,1-Math.exp(-e*5.5));}this.cameraTimer-=e,this.cameraTimer<=0&&(this.targetActor=null,!this.manualZoom&&(function(self){const ad=self.getAdaptiveCameraTargets();self.cameraTarget.lerp(ad.camPos,1-Math.exp(-e*2.2));self.lookTarget.lerp(ad.lookPos,1-Math.exp(-e*2.2));})(this)),this.camera.position.lerp(this.cameraTarget,1-Math.exp(-e*3.5)),this.camera.lookAt(this.lookTarget),
   this.shakeDuration>0&&(this.shakeDuration-=e,this.camera.position.x+=(Math.random()-.5)*this.shakeIntensity*(this.shakeDuration/1.8),this.camera.position.y+=(Math.random()-.5)*this.shakeIntensity*(this.shakeDuration/1.8)),this.state.camera==="Thiên kiếp"&&(this.camera.position.x+=Math.sin(s*50)*.025)}this.composer.render();this.publishTimer+=e,this.publishTimer>.2&&(this.publishTimer=0,this.state.fps=Math.min(60,Math.round(1/Math.max(e,.001))),this.publish())});this.host=e,this.update=t,this.renderer=new VE({antialias:!0,alpha:!1,powerPreference:"high-performance"}),this.renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.0)),this.renderer.shadowMap.enabled=!1,this.renderer.shadowMap.type=og,this.renderer.toneMapping=Ll,this.renderer.toneMappingExposure=.92,e.appendChild(this.renderer.domElement),this.labels=document.createElement("div"),this.labels.className="world-labels",e.appendChild(this.labels),this.scene.background=new Ne("#080617"),this.scene.fog=new th("#221137",.025);const n=new La(this.renderer),r=new mP,s=n.fromScene(r,.04);this.scene.environment=s.texture,r.dispose(),n.dispose(),this.camera.position.copy(this.cameraTarget),this.camera.lookAt(this.lookTarget),this.scene.add(new RS("#9d8cc9","#1a1026",1.15));const a=new bl("#c9c2e8",2.1);a.position.set(-4,12,7),a.castShadow=!0,a.shadow.mapSize.set(1024,1024),a.shadow.camera.left=-12,a.shadow.camera.right=12,a.shadow.camera.top=12,a.shadow.camera.bottom=-12,a.shadow.bias=-.001,this.scene.add(a);const o=new bl("#7756e8",3);o.position.set(5,9,-5),this.scene.add(o),this.buildArena(),this.bossAnchor.position.set(0,2.2,-2.2),this.bossAnchor.scale.setScalar(1.85),this.bossAnchor.add(this.boss),this.scene.add(this.bossAnchor),this.buildCrowd(2000);this.initLegionSwords(),this.stars=this.buildSky(),this.ultraFastMode=!1,this.composer=new JE(this.renderer),this.composer.addPass(new YE(this.scene,this.camera)),this.bloomPass=new xs(new ue(256,256),.18,.4,0.98),this.composer.addPass(this.bloomPass),this.composer.addPass(new KE),this.observer=new ResizeObserver(()=>this.resize()),this.observer.observe(e),this.resize();const _uAudio=()=>{this.audio&&this.audio.setEnabled(!0);window.removeEventListener("click",_uAudio);window.removeEventListener("keydown",_uAudio);};window.addEventListener("click",_uAudio);window.addEventListener("keydown",_uAudio);["linh.nhi","kiemkhach","tieu.long","ngoc.anh","thien.vu","bach.lien","minh.nguyet","vo.danh"].forEach(l=>this.spawn(l)),window.raidGame=this,window.resetRaidGame=()=>this.resetAllData(),window.playerLeaveRoom=(u)=>this.playerLeaveRoom(u),window.addEventListener("pointerdown",()=>{if(window.raidGame&&window.raidGame.audio){window.raidGame.audio.initContext();if(!window.raidGame.audio.enabled)window.raidGame.audio.setEnabled(!0);}},{passive:!0});this.connectTikTokBridge(),this.updateLabelRanks(),this.log("Đấu trường đã sẵn sàng. Hãy gửi sự kiện đầu tiên.","system"),this.animate();this.triggerNewMatchTopSkills();}resize(){const e=this.host.clientWidth,t=this.host.clientHeight;if(!e||!t)return;this.camera.aspect=e/t,this.camera.updateProjectionMatrix(),this.renderer.setSize(e,t),this.composer.setSize(e,t);const bw=Math.min(Math.round(e*.35),320),bh=Math.min(Math.round(t*.35),320);if(this.bloomPass)this.bloomPass.setSize(bw,bh);}buildArena(){
   const arenaMat=new dn({color:"#1a1429",roughness:.72,metalness:.28});
   const arenaBase=new mt(new fr(52,52,.7,96),arenaMat);
@@ -5379,9 +5379,10 @@ spawn(e,t){
   }
   this.targetActor = null;
   this.cameraTimer = e === "ultimate" ? 2.6 : e === "attack" ? 1.6 : e === "gift" ? 2.2 : 0;
-  this.state.camera = e === "ultimate" ? "Thiên kiếp" : e === "attack" ? "Xuất kiếm" : e === "gift" ? "Kỹ năng" : e === "phase" ? "Giai đoạn trùm" : "Chính diện";
-  this.cameraTarget = e === "ultimate" ? Ft(1.8, 4.8, 10.5) : e === "attack" ? Ft(0.8, 2.9, 8.2) : e === "gift" ? Ft(-1.5, 6.5, 12.5) : e === "phase" ? Ft(0, 15.0, 36.0) : Ft(0, 14.5, 40.0);
-  this.lookTarget = e === "attack" ? Ft(0, 2.2, 0.4) : e === "ultimate" ? Ft(0, 3.0, -0.4) : e === "gift" ? Ft(0, 6.8, 0.2) : Ft(0, 6.0, -1.8);
+  const _adapt=this.getAdaptiveCameraTargets();
+  this.state.camera = e === "ultimate" ? "Thiên kiếp" : e === "attack" ? "Xuất kiếm" : e === "gift" ? "Kỹ năng" : e === "phase" ? "Giai đoạn trùm" : _adapt.modeName;
+  this.cameraTarget = e === "ultimate" ? Ft(1.8, 4.8, 10.5) : e === "attack" ? Ft(0.8, 2.9, 8.2) : e === "gift" ? Ft(-1.5, 6.5, 12.5) : e === "phase" ? Ft(0, 15.0, 36.0) : _adapt.camPos;
+  this.lookTarget = e === "attack" ? Ft(0, 2.2, 0.4) : e === "ultimate" ? Ft(0, 3.0, -0.4) : e === "gift" ? Ft(0, 6.8, 0.2) : _adapt.lookPos;
 }effect(e,t,n=!1,r=2){const s=new cn;s.position.copy(e);const a=new ii({color:t,transparent:!0,opacity:.8,side:Qt,depthWrite:!1}),o=new mt(new Wn(.5,.035,6,64),a);o.rotation.x=Math.PI/2,s.add(o);if(this.bursts&&this.bursts.length>5){const ob=this.bursts.shift();ob&&ob.group&&(this.scene.remove(ob.group),this.disposeObject(ob.group));}const l=[],c=[],f=this.ultraFastMode?(n?32:14):(n?120:40);for(let h=0;h<f;h++)l.push(0,0,0),c.push(Ft((Math.random()-.5)*r,Math.random()*r,(Math.random()-.5)*r));const u=new Dt;if(u.setAttribute("position",new rt(l,3)),s.add(new jo(u,new gl({color:t,size:n?.14:.075,transparent:!0,opacity:1,blending:br,depthWrite:!1}))),n){const h=new mt(new fr(.04,.5,12,8,1,!0),new ii({color:t,transparent:!0,opacity:.5,side:Qt,blending:br}));h.position.y=5,s.add(h)}this.scene.add(s),this.bursts.push({group:s,age:0,duration:n?2.2:1.1,velocity:c}),this.crowdCheer=1.0,this.audio.play(n)}
 getXianxiaWing(type){
   const g1=type==="gold"?"#ffd700":(type==="cyan"?"#38bdf8":"#f43f5e");
@@ -5780,13 +5781,44 @@ buildCrowd(targetCount=10000){if(this.crowdMeshes){this.crowdMeshes.forEach(m=>{
   const rotY=Math.atan2(px,pz+2.0)*.22;
   dummy.position.set(px,py,pz),dummy.rotation.set(0,rotY,0),dummy.scale.set(sc,sc,sc),dummy.updateMatrix(),inst.setMatrixAt(i,dummy.matrix)
 }inst.instanceMatrix.needsUpdate=!0,this.scene.add(inst),this.crowdMeshes.push(inst),curIndex+=countForThis}}
+getAdaptiveCameraTargets(){
+  if(this.manualZoom&&this.manualZoom!=="auto"){
+    const d=typeof this.manualZoom==="number"?this.manualZoom:18.0;
+    const r=(d-6)/(45-6);
+    return {
+      camPos:Ft(0,3.2+r*11.3,d),
+      lookPos:Ft(0,2.5+r*3.5,r*-1.8),
+      modeName:`Thủ công (${d}m)`,
+      dist:d
+    };
+  }
+  const count=Math.max(this.state.players.length,this.state.viewerCount||0);
+  const isTeam=count<=100;
+  const d=isTeam?18.0:35.0;
+  const r=(d-6)/(45-6);
+  return {
+    camPos:Ft(0,3.2+r*11.3,d),
+    lookPos:Ft(0,2.5+r*3.5,r*-1.8),
+    modeName:isTeam?`Toàn đội 18m (${count} người)`:`Toàn cảnh 35m (${count} người)`,
+    dist:d,
+    isTeam:isTeam
+  };
+}
 setZoom(dist){
-  const d=Math.max(6,Math.min(45,dist));
-  const ratio=(d-6)/(45-6);
-  this.cameraTarget.set(0,3.2+ratio*11.3,d);
-  this.lookTarget.set(0,2.5+ratio*3.5,ratio*-1.8);
-  this.camera.position.copy(this.cameraTarget);
-  this.camera.lookAt(this.lookTarget);
+  if(dist==="auto"||dist===0){
+    this.manualZoom=null;
+    const adapt=this.getAdaptiveCameraTargets();
+    this.cameraTarget.copy(adapt.camPos);
+    this.lookTarget.copy(adapt.lookPos);
+    this.log(`📷 Đã bật chế độ Góc Quay Tự Động: 1-100 người (18m) | >100 người (35m)`,"system");
+  }else{
+    this.manualZoom=dist;
+    const d=Math.max(6,Math.min(45,Number(dist)));
+    const ratio=(d-6)/(45-6);
+    this.cameraTarget.set(0,3.2+ratio*11.3,d);
+    this.lookTarget.set(0,2.5+ratio*3.5,ratio*-1.8);
+    this.log(`📷 Đã chuyển sang góc quay thủ công: ${d}m`,"system");
+  }
   this.publish();
 }
 initLegionSwords(){
@@ -6432,13 +6464,13 @@ P.jsxs("div",{style:{gridColumn:"1 / -1",display:"flex",gap:4,marginTop:4,margin
 ]})]}),P.jsxs("button",{className:"ultimate-btn",onClick:()=>D("gift","ultimate"),children:[P.jsx(py,{size:20}),P.jsxs("span",{children:["THIÊN KIẾP · ULTIMATE",P.jsx("small",{children:"Kỹ năng tối thượng & camera điện ảnh"})]}),P.jsx(my,{size:17})]}),P.jsxs("div",{className:"crowd-control-box",style:{marginTop:12,marginBottom:12,padding:10,background:"rgba(24,18,38,0.75)",borderRadius:8,border:"1px solid rgba(168,85,247,0.3)"},children:[P.jsxs("div",{className:"section-kicker",style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8},children:[P.jsx("span",{style:{fontWeight:700,fontSize:11.5,color:"#e9d5ff"},children:"⚔️ QUY MÔ QUÂN ĐOÀN TU SĨ (ĐỒNG MINH)"}),P.jsx("span",{className:"tag",style:{background:"#6b21a8",color:"#fff",padding:"2px 8px",borderRadius:4,fontSize:11,fontWeight:700},children:(n.crowdCount||10000).toLocaleString()+" Tu Sĩ"})]}),P.jsx("div",{style:{display:"flex",gap:4,flexWrap:"wrap",marginBottom:8},children:[20,500,2000,5000,10000].map(cnt=>P.jsx("button",{key:cnt,className:`pill-btn ${(n.crowdCount||10000)===cnt?"active":""}`,style:{padding:"3px 8px",fontSize:10.5,background:(n.crowdCount||10000)===cnt?"#a855f7":"rgba(255,255,255,0.06)",border:"1px solid rgba(168,85,247,0.4)",color:"#fff",borderRadius:4,cursor:"pointer"},onClick:()=>{var O;(O=t.current)==null||O.setCrowdCount(cnt)},children:cnt===100000?"⚡ 100.000 (Đại Quân)":cnt===10000?"🔥 10.000":cnt.toLocaleString()}))}),P.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8},children:[P.jsx("input",{type:"range",min:20,max:100000,step:100,value:n.crowdCount||10000,onChange:e=>{var O;(O=t.current)==null||O.setCrowdCount(Number(e.target.value))},style:{flex:1,accentColor:"#a855f7",cursor:"pointer"}}),P.jsx("span",{style:{fontSize:11,fontWeight:700,color:"#c084fc",minWidth:50,textAlign:"right"},children:(n.crowdCount||10000).toLocaleString()})]})]}),P.jsxs("div",{className:"zoom-control-box",style:{marginTop:10,marginBottom:12,padding:10,background:"rgba(16,185,129,0.12)",borderRadius:8,border:"1px solid rgba(16,185,129,0.35)"},children:[
   P.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8},children:[
     P.jsx("span",{style:{fontWeight:700,fontSize:11.5,color:"#6ee7b7"},children:"🔍 GÓC QUAY & ĐỘ ZOOM CHIẾN ĐẤU"}),
-    P.jsx("span",{className:"tag",style:{background:"#059669",color:"#fff",padding:"2px 8px",borderRadius:4,fontSize:10.5,fontWeight:700},children:"Cận cảnh người chơi"})
+    P.jsx("span",{className:"tag",style:{background:n.players.length<=100?"#059669":"#2563eb",color:"#fff",padding:"2px 8px",borderRadius:4,fontSize:10.5,fontWeight:700},children:n.players.length<=100?"🛡️ Tự động: Toàn đội 18m (≤100 người)":"🌐 Tự động: Toàn cảnh 35m (>100 người)"})
   ]}),
   P.jsx("div",{style:{display:"flex",gap:4},children:[
-    {label:"🔍 Siêu Sát (8m)",d:8.5},
-    {label:"⚔️ Cận Cảnh (11m)",d:11.2},
+    {label:"🔄 Tự Động (Theo Số Người)",d:"auto"},
     {label:"🛡️ Toàn Đội (18m)",d:18.0},
-    {label:"🌐 Toàn Cảnh (35m)",d:35.0}
+    {label:"🌐 Toàn Cảnh (35m)",d:35.0},
+    {label:"⚔️ Cận Cảnh (11m)",d:11.2}
   ].map(it=>P.jsx("button",{
     key:it.label,
     type:"button",
