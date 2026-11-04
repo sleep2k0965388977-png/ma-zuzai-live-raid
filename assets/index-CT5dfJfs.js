@@ -5284,30 +5284,30 @@ spawn(e,t){
       }
     }
   });
-  // Vị trí ngẫu nhiên bất kỳ trên sàn đấu, không theo hàng lối từ trái qua phải
+  // Khu vực xuất hiện người chơi: phân bổ rộng khắp sàn đấu theo đúng khung xanh (Z: 2.5m - 20.0m, X: -16m đến +16m)
   let px=0, pz=0, attempts=0, foundSpot=!1;
-  const minR=3.6, maxR=13.2;
-  while(attempts<15&&!foundSpot){
+  const minR=7.5, maxR=21.0;
+  while(attempts<35&&!foundSpot){
     attempts++;
     const rad=minR+Math.random()*(maxR-minR);
-    const ang=(Math.random()-0.5)*2.65;
-    const testX=Math.sin(ang)*rad+(Math.random()-0.5)*0.9;
-    const testZ=Math.cos(ang)*rad-1.8+(Math.random()-0.5)*0.9;
+    const ang=(Math.random()-0.5)*2.15;
+    const testX=Math.sin(ang)*rad+(Math.random()-0.5)*1.2;
+    const testZ=Math.cos(ang)*rad-1.6+(Math.random()-0.5)*1.2;
     let tooClose=!1;
     for(const act of this.actors.values()){
       if(act&&act.home){
         const dx=act.home.x-testX, dz=act.home.z-testZ;
-        if(dx*dx+dz*dz<0.85){tooClose=!0;break;}
+        if(dx*dx+dz*dz<1.85){tooClose=!0;break;}
       }
     }
-    if(!tooClose||attempts>=14){
+    if(!tooClose||attempts>=34){
       px=testX; pz=testZ; foundSpot=!0;
     }
   }
   const o=Ft(px,0,pz);
   r.position.copy(o);
-  // Nhân vật tự động quay mặt hướng về Ma Tôn ở (0, 0, -1.8)
-  const faceAngle=Math.atan2(-px,-(pz-(-1.8)));
+  // Nhân vật tự động quay mặt hướng về Ma Tôn ở (0, 0, -1.6)
+  const faceAngle=Math.atan2(-px,-(pz-(-1.6)));
   r.rotation.y=faceAngle;
   this.scene.add(r);
   const l={root:r,home:o,attack:0,skill:"attack",hit:!1};
