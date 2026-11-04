@@ -632,3 +632,23 @@
   3. **Hỗ trợ toàn diện quà tặng từ 1 Xu (Hoa Hồng)**:
      - Mở rộng sàn kích hoạt Tuyệt Kỹ: Bất kỳ quà tặng nào từ **1 Xu trở lên** (1 bông hoa hồng, trái tim, v.v.) đều kích hoạt ngay chiêu thức **Kiếm Vàng** xé gió chém Boss!
      - Cập nhật đồng bộ trong `tiktok_bridge.js`, `server.js` và toàn bộ giao diện bảng điều khiển.
+
+---
+
+## 38. Bảng Phân Loại Quà Tặng Toàn Diện & Tự Động Khởi Chạy 1-Click
+- **Yêu cầu từ người dùng**:
+  > *"bạn hãy xem tất cả quà tích tiktok bạn hãy phân loại như này rồi đúng ko"* và *"oke giờ đã có tất cả rồi hãy commit lưu lại đoạn hội thoại chát này lên git và tất cả những gì đã thay đổi"*
+- **Tổng kết toàn bộ 5 Cấp Độ Quà Tặng TikTok**:
+  | Cấp Độ | Dải Xu Thực Tế | Ví Dụ Quà Tặng Trên TikTok | Chiêu Thức Nhân Vật Tung Ra |
+  | :---: | :---: | :--- | :--- |
+  | **Cấp 1** | **1 – 19 Xu** | Hoa hồng (1 Xu), Nốt nhạc, Trái tim, Bánh Donut (10 Xu), Trà sữa (9 Xu)... | Đánh ra **1 Lưỡi Kiếm Vàng** ánh kim bay xé gió chém Boss |
+  | **Cấp 2** | **20 – 44 Xu** | Nước hoa (20 Xu), Nón lưỡi trai (25 Xu), Bánh kem (30 Xu), Kính mát mini... | Triệu hồi **1 Thanh Cự Kiếm 9m** cắm từ trời cao xuống đầu Boss gây nổ |
+  | **Cấp 3** | **45 – 79 Xu** | Bắn pháo hoa mini (49 Xu), Hộp quà bí mật, Cánh thiên thần (70 Xu)... | Khai mở **Pháp Trận Mưa Kiếm 22 thanh** liên hoàn oanh tạc dồn dập |
+  | **Cấp 4** | **80 – 149 Xu** | Kính râm sành điệu (99 Xu), Vương miện nhỏ (99 Xu), Trái tim khổng lồ (100 Xu)... | Mọc Cánh Kim Quang & Triệu hồi **1 Thần Long Vàng** lượn vòng cung bổ nhào |
+  | **Cấp 5** | **≥ 150 Xu** | Pháo hoa lớn (1088 Xu), Du thuyền (7499 Xu), Cá voi bay, Sư tử, Vũ trụ TikTok... | Mọc Cánh Thần Thoại & Triệu hồi **ĐÀN 10 CON THẦN LONG** vây hãm đại nổ liên hoàn! |
+- **Tính năng cộng dồn Combo (Repeat Gift)**:
+  - Hệ thống tự động nhân `diamonds = diamondCount * repeatCount`.
+  - Người xem gửi combo nhiều quà nhỏ liên tiếp (ví dụ 50 bông hoa hồng 1 xu = 50 Xu) sẽ tự động được nâng cấp lên tuyệt chiêu Cấp 3 (Mưa kiếm) ngay lập tức!
+- **Nâng cấp Launcher & Cẩm nang hướng dẫn**:
+  - Cập nhật `START_GAME_LIVE.bat`: Tự động kiểm tra Node.js, tự chạy `npm install` nếu thiếu và mở máy chủ Web + TikTok Bridge chỉ với 1 click.
+  - Biên soạn hoàn chỉnh tệp tài liệu `HUONG_DAN_CAI_DAT_VA_CAU_HINH.md` hướng dẫn từ A - Z.
