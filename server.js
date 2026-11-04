@@ -186,7 +186,7 @@ async function connectToTikTok(uniqueId) {
       else if (diamonds >= 80) skill = 'single_dragon';
       else if (diamonds >= 45) skill = 'sword_rain';
       else if (diamonds >= 20) skill = 'giant_sword';
-      else if (diamonds >= 5) skill = 'small';
+      else if (diamonds >= 1) skill = 'small'; // Kích hoạt ngay từ 1 Xu (Hoa hồng, v.v.)
 
       stats.gifts++;
       console.log(`[Gift] @${data.uniqueId} tặng ${data.giftName} (${diamonds} Xu) -> [${skill}]!`);
