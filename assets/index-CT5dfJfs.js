@@ -5056,7 +5056,33 @@ this.brazierLights&&this.brazierLights.forEach((blt,idx)=>{blt.intensity=4.2+Mat
       this.playClip(o.mixer,o.clips??[],"idle");
     }
   }
-}else o.root.position.y=o.home.y+Math.sin(s*2+o.home.x)*.025,o.root.rotation.z=c.hp<=0?-.65:Math.sin(s+o.home.z)*.012;const f=this.labelNodes.get(l);if(f){if(!this._lblVec)this._lblVec=new B;const h=this._lblVec.copy(o.root.position);h.y+=1.55;h.project(this.camera);f.style.left=`${(h.x*.5+.5)*100}%`,f.style.top=`${(-h.y*.5+.5)*100}%`,f.style.opacity=h.z<1?"1":"0",c.hp<=0?f.classList.add("down"):f.classList.remove("down")}}),this.bursts=this.bursts.filter(o=>{o.age+=e;const l=o.age/o.duration,c=o.group.children[0];c.scale.setScalar(1+l*8),c.material.opacity=1-l;const f=o.group.children[1],u=f.geometry.attributes.position;for(let h=0;h<u.count;h++){const d=o.velocity[h];u.setXYZ(h,d.x*o.age,d.y*o.age-o.age*o.age*.4,d.z*o.age)}if(u.needsUpdate=!0,f.material.opacity=1-l,o.group.children[2]){const h=o.group.children[2];h.material.opacity=(1-l)*.5,h.scale.x=1+Math.sin(o.age*18)*.3}return l>=1?(this.scene.remove(o.group),this.disposeObject(o.group),!1):!0});if(this.targetActor&&this.targetActor.root&&this.cameraTimer>0){const curP=this.targetActor.root.position;this.lookTarget.lerp(Ft(curP.x,curP.y+1.1,curP.z),1-Math.exp(-e*6));const isGift=this.targetActor.isGift||this.targetActor.skill!=="attack",camDistZ=isGift?5.6:4.8,camElevY=isGift?Math.max(3.2,curP.y-0.4):Math.max(2.4,curP.y+0.2),sideX=(curP.x>=0?1.5:-1.5)*(isGift?0.8:0.6),targetCamPos=Ft(curP.x*0.4+sideX,camElevY,curP.z+camDistZ);this.cameraTarget.lerp(targetCamPos,1-Math.exp(-e*5.5));}this.cameraTimer-=e,this.cameraTimer<=0&&this.state.camera!=="Chính diện"&&(this.targetActor=null,this.setCamera("main")),this.camera.position.lerp(this.cameraTarget,1-Math.exp(-e*3.5)),this.camera.lookAt(this.lookTarget),
+}else o.root.position.y=o.home.y+Math.sin(s*2+o.home.x)*.025,o.root.rotation.z=c.hp<=0?-.65:Math.sin(s+o.home.z)*.012;let f=this.labelNodes.get(l);
+if(!f){
+  f=document.createElement("div");
+  f.className="xx-nametag regular";
+  f.innerHTML='<div class="xx-card-frame"><div class="xx-title">【 ⚔️ ĐẠO HỮU 】</div><div class="xx-player-name">@'+l+'</div></div>';
+  this.labels.appendChild(f);
+  this.labelNodes.set(l,f);
+}
+if(f){
+  if(!this._lblVec)this._lblVec=new B;
+  const h=this._lblVec.copy(o.root.position);
+  const isAttacking=Boolean(o.attack&&o.attack>0);
+  h.y+=isAttacking?2.45:1.75;
+  h.project(this.camera);
+  f.style.left=`${(h.x*.5+.5)*100}%`;
+  f.style.top=`${(-h.y*.5+.5)*100}%`;
+  if(isAttacking){
+    f.classList.add("attacking");
+    f.style.opacity="1";
+    f.style.zIndex="99999";
+  }else{
+    f.classList.remove("attacking");
+    f.style.zIndex="";
+    f.style.opacity=h.z<1?"1":"0";
+  }
+  (c&&c.hp<=0)?f.classList.add("down"):f.classList.remove("down");
+}}),this.bursts=this.bursts.filter(o=>{o.age+=e;const l=o.age/o.duration,c=o.group.children[0];c.scale.setScalar(1+l*8),c.material.opacity=1-l;const f=o.group.children[1],u=f.geometry.attributes.position;for(let h=0;h<u.count;h++){const d=o.velocity[h];u.setXYZ(h,d.x*o.age,d.y*o.age-o.age*o.age*.4,d.z*o.age)}if(u.needsUpdate=!0,f.material.opacity=1-l,o.group.children[2]){const h=o.group.children[2];h.material.opacity=(1-l)*.5,h.scale.x=1+Math.sin(o.age*18)*.3}return l>=1?(this.scene.remove(o.group),this.disposeObject(o.group),!1):!0});if(this.targetActor&&this.targetActor.root&&this.cameraTimer>0){const curP=this.targetActor.root.position;this.lookTarget.lerp(Ft(curP.x,curP.y+1.1,curP.z),1-Math.exp(-e*6));const isGift=this.targetActor.isGift||this.targetActor.skill!=="attack",camDistZ=isGift?5.6:4.8,camElevY=isGift?Math.max(3.2,curP.y-0.4):Math.max(2.4,curP.y+0.2),sideX=(curP.x>=0?1.5:-1.5)*(isGift?0.8:0.6),targetCamPos=Ft(curP.x*0.4+sideX,camElevY,curP.z+camDistZ);this.cameraTarget.lerp(targetCamPos,1-Math.exp(-e*5.5));}this.cameraTimer-=e,this.cameraTimer<=0&&this.state.camera!=="Chính diện"&&(this.targetActor=null,this.setCamera("main")),this.camera.position.lerp(this.cameraTarget,1-Math.exp(-e*3.5)),this.camera.lookAt(this.lookTarget),
   this.shakeDuration>0&&(this.shakeDuration-=e,this.camera.position.x+=(Math.random()-.5)*this.shakeIntensity*(this.shakeDuration/1.8),this.camera.position.y+=(Math.random()-.5)*this.shakeIntensity*(this.shakeDuration/1.8)),this.state.camera==="Thiên kiếp"&&(this.camera.position.x+=Math.sin(s*50)*.025)}this.composer.render();this.publishTimer+=e,this.publishTimer>.2&&(this.publishTimer=0,this.state.fps=Math.min(60,Math.round(1/Math.max(e,.001))),this.publish())});this.host=e,this.update=t,this.renderer=new VE({antialias:!0,alpha:!1,powerPreference:"high-performance"}),this.renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.0)),this.renderer.shadowMap.enabled=!1,this.renderer.shadowMap.type=og,this.renderer.toneMapping=Ll,this.renderer.toneMappingExposure=.92,e.appendChild(this.renderer.domElement),this.labels=document.createElement("div"),this.labels.className="world-labels",e.appendChild(this.labels),this.scene.background=new Ne("#080617"),this.scene.fog=new th("#221137",.025);const n=new La(this.renderer),r=new mP,s=n.fromScene(r,.04);this.scene.environment=s.texture,r.dispose(),n.dispose(),this.camera.position.copy(this.cameraTarget),this.camera.lookAt(this.lookTarget),this.scene.add(new RS("#9d8cc9","#1a1026",1.15));const a=new bl("#c9c2e8",2.1);a.position.set(-4,12,7),a.castShadow=!0,a.shadow.mapSize.set(1024,1024),a.shadow.camera.left=-12,a.shadow.camera.right=12,a.shadow.camera.top=12,a.shadow.camera.bottom=-12,a.shadow.bias=-.001,this.scene.add(a);const o=new bl("#7756e8",3);o.position.set(5,9,-5),this.scene.add(o),this.buildArena(),this.bossAnchor.position.set(0,2.2,-2.2),this.bossAnchor.scale.setScalar(1.85),this.bossAnchor.add(this.boss),this.scene.add(this.bossAnchor),this.buildCrowd(2000);this.initLegionSwords(),this.stars=this.buildSky(),this.ultraFastMode=!1,this.composer=new JE(this.renderer),this.composer.addPass(new YE(this.scene,this.camera)),this.bloomPass=new xs(new ue(256,256),.18,.4,0.98),this.composer.addPass(this.bloomPass),this.composer.addPass(new KE),this.observer=new ResizeObserver(()=>this.resize()),this.observer.observe(e),this.resize();const _uAudio=()=>{this.audio&&this.audio.setEnabled(!0);window.removeEventListener("click",_uAudio);window.removeEventListener("keydown",_uAudio);};window.addEventListener("click",_uAudio);window.addEventListener("keydown",_uAudio);window.raidGame=this,window.resetRaidGame=()=>this.resetAllData(),window.playerLeaveRoom=(u)=>this.playerLeaveRoom(u),window.addEventListener("pointerdown",()=>{if(window.raidGame&&window.raidGame.audio){window.raidGame.audio.initContext();if(!window.raidGame.audio.enabled)window.raidGame.audio.setEnabled(!0);}},{passive:!0});this.connectTikTokBridge(),this.resetAllData(),this.animate();}resize(){const e=this.host.clientWidth,t=this.host.clientHeight;if(!e||!t)return;this.camera.aspect=e/t,this.camera.updateProjectionMatrix(),this.renderer.setSize(e,t),this.composer.setSize(e,t);const bw=Math.min(Math.round(e*.35),320),bh=Math.min(Math.round(t*.35),320);if(this.bloomPass)this.bloomPass.setSize(bw,bh);}buildArena(){
   const arenaMat=new dn({color:"#1a1429",roughness:.72,metalness:.28});
   const arenaBase=new mt(new fr(52,52,.7,96),arenaMat);
@@ -5313,9 +5339,13 @@ spawn(e,t){
   const l={root:r,home:o,attack:0,skill:"attack",hit:!1};
   const _clips=ros.length>0?ros[n%ros.length].clips:(this.playerClips||[]);if(_clips&&_clips.length>0&&curTmpl){try{l.mixer=new fp(r);l.clips=_clips;this.playClip(l.mixer,_clips,"idle");}catch(e){}}
   this.actors.set(e,l),this.state.players.push({username:e,avatar:t,damage:0,hp:100,color:n%8,joinTime:Date.now()+(this.state.players.length*10),lastActiveTime:Date.now()});
-  if(n<16){
-    const c=document.createElement("div");
-    c.textContent=`@${e}`,this.labels.appendChild(c),this.labelNodes.set(e,c);
+  let c=this.labelNodes.get(e);
+  if(!c){
+    c=document.createElement("div");
+    c.className="xx-nametag regular";
+    c.innerHTML='<div class="xx-card-frame"><div class="xx-title">【 ⚔️ ĐẠO HỮU 】</div><div class="xx-player-name">@'+e+'</div></div>';
+    this.labels.appendChild(c);
+    this.labelNodes.set(e,c);
   }
   return l;
 }addPlayer(e,count=1){
@@ -5426,7 +5456,14 @@ updateLabelRanks(){
     return (a.joinTime||0)-(b.joinTime||0);
   });
   for(let idx=0;idx<sorted.length;idx++){
-    const p=sorted[idx],node=this.labelNodes.get(p.username);
+    const p=sorted[idx];
+    let node=this.labelNodes.get(p.username);
+    if(!node){
+      node=document.createElement("div");
+      node.className="xx-nametag regular";
+      this.labels.appendChild(node);
+      this.labelNodes.set(p.username,node);
+    }
     if(node){
       const rank=idx+1,curRank=node.dataset.vipRank;
       if(curRank!==String(rank)){
@@ -5445,7 +5482,7 @@ updateLabelRanks(){
           node.innerHTML='<div class="xx-card-frame"><div class="xx-title">【 ✦ TINH ANH • #'+rank+' 】</div><div class="xx-player-name">@'+p.username+'</div></div>';
         }else{
           node.className="xx-nametag regular";
-          node.innerHTML='<span class="xx-player-name">@'+p.username+'</span>';
+          node.innerHTML='<div class="xx-card-frame"><div class="xx-title">【 ⚔️ ĐẠO HỮU • #'+rank+' 】</div><div class="xx-player-name">@'+p.username+'</div></div>';
         }
       }
     }

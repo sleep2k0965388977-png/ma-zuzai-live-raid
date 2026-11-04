@@ -667,3 +667,32 @@
      - **Bề ngang**: Xòe rộng theo hình nan quạt góc 124 độ (`X: -16.9m đến +16.9m`), dàn trận đều đặn khắp sàn đấu.
      - **Khoảng cách chống chồng đè**: Nâng khoảng cách tối thiểu giữa 2 người chơi lên `1.36m` (`minDistSq = 1.85`), giúp các nhân vật và bảng tên không còn bị đứng đè lên nhau.
      - **Tự động hướng tâm**: Toàn bộ nhân vật trong khung xanh đều tự động quay mặt hướng chính diện về phía Boss Ma Zuzai.
+
+---
+
+## 40. Khắc Phục Lỗi Thiếu Tên Cho Toàn Bộ Người Chơi Ngoài Top Khi Bay Lên Đánh Boss
+- **Yêu cầu từ người dùng**:
+  > *"t thấy những người chơi ko có tên trong tốp lúc bay lên đánh quái đang ko hiển thị tên hãy chỉnh lại cho nó hiển thị đầy đủ cả tên"* (kèm ảnh chụp màn hình một nhân vật váy đỏ bay lên trước Boss Ma Zuzai, xuất chiêu gây -180 DMG nhưng trên đầu hoàn toàn không có bảng tên).
+- **Phân tích nguyên nhân gốc rễ (Root Cause Analysis)**:
+  1. *Giới hạn cứng 16 người chơi trong hàm `spawn`*:
+     - Trong mã nguồn gốc: `if (n < 16) { const c = document.createElement("div"); ... this.labelNodes.set(e, c); }`.
+     - Chỉ có tối đa 16 người chơi đầu tiên mới được tạo thẻ DOM tên nhân vật. Khi phòng live có đông người chơi tham gia (trong ảnh chụp có tới 57 người), toàn bộ người chơi từ thứ 17 trở đi hoàn toàn không có phần tử nhãn tên (`labelNodes.get(name) === undefined`).
+  2. *Hàm cập nhật thứ hạng `updateLabelRanks` bỏ qua phần tử chưa tồn tại*:
+     - Kiểm tra `if (node)` chỉ cập nhật cho các thẻ tên đã có, không tự tạo mới cho những người ngoài top 16.
+  3. *Vị trí và độ ưu tiên hiển thị (Z-Index) khi bay lên tấn công*:
+     - Tọa độ chiếu 3D cũ `h.y += 1.55` chỉ nằm ngang ngực/hông nhân vật khi bay cao, dễ bị che lấp bởi hiệu ứng số sát thương `-180` và mô hình 3D của Boss.
+     - Chưa có lớp CSS ưu tiên chuyên dụng khi xuất chiêu khiến bảng tên của người ngoài top rất mờ nhạt (chỉ 7.5px không có khung thẻ).
+- **Giải pháp & Cải tiến toàn diện**:
+  1. **Đảm bảo 100% người chơi đều có thẻ tên**:
+     - Loại bỏ hoàn toàn điều kiện `if (n < 16)` trong hàm `spawn`. Bất kỳ ai vào phòng live đều được cấp phát ngay thẻ tên tu sĩ.
+     - Trong hàm `updateLabelRanks` và vòng lặp `animate`, bổ sung cơ chế kiểm tra và tự động khởi tạo ngay lập tức nếu người chơi chưa có thẻ tên trong DOM.
+  2. **Nâng cấp giao diện Thẻ Tên Tu Sĩ Ngoài Top (Regular Cultivator)**:
+     - Định dạng thẻ bài tiên hiệp chuẩn chỉnh: `【 ⚔️ ĐẠO HỮU • #ThứHạng 】` kèm `@username`.
+     - Khung thẻ hiệu ứng viền tím huyền ảo `rgba(192, 132, 252, 0.6)` với nền bán trong suốt sang trọng, chữ trắng đậm 8px sắc nét.
+  3. **Hiệu ứng Thăng Hoa Khi Xuất Chiêu Tấn Công (`.xx-nametag.attacking`)**:
+     - Khi người chơi bay lên đánh Boss (`o.attack > 0`):
+       - Tọa độ bảng tên được nâng cao thêm (`h.y += 2.45m`), nổi bật ngay trên đỉnh đầu nhân vật, không bao giờ bị che khuất bởi số sát thương hay người khác.
+       - Tự động kích hoạt lớp `.attacking` với `z-index: 99999` (luôn luôn nằm trên cùng màn hình).
+       - Tỷ lệ hiển thị phóng to 1.25x (`scale: 1.25`), viền hào quang hoàng kim rực rỡ (`#fde047`, phát sáng vàng `0 0 18px #eab308`), chữ tên màu trắng phát quang 9.5px cực kỳ nổi bật trên luồng sáng của Boss.
+       - Hiệu ứng nhịp đập linh khí liên tục (`xxAttackPulse`) trong suốt thời gian bay lượn xuất chiêu.
+
