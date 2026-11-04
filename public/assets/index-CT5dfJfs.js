@@ -6165,6 +6165,24 @@ Mt.useEffect(()=>{
   P.jsxs("span",{className:"alive-count-badge",title:"Số tu sĩ đang sống",children:[P.jsx(Kh,{size:12})," ",(n.players.filter(p=>!p.eliminated).length).toLocaleString()]}),
   P.jsxs("span",{className:"elim-count-badge",title:"Tổng số người đã bị loại",children:[P.jsx("span",{className:"skull-mini",children:"💀"})," ",(n.totalEliminated||0).toLocaleString()]}),
   P.jsxs("span",{children:[P.jsx($h,{size:12})," ",Math.round(n.energy),"%"]})
+]}),P.jsxs("div",{className:"combat-dmg-frame",children:[
+  P.jsxs("div",{className:"combat-dmg-header",children:[
+    P.jsxs("span",{className:"combat-title",children:["⚔️ SÁT THƯƠNG GÂY RA"]}),
+    n.lastDamage>0?P.jsxs("span",{className:"combat-combo-badge",children:["🔥 x",n.combo]}):P.jsx("span",{className:"combat-live-dot",children:"● SẴN SÀNG"})
+  ]}),
+  n.lastDamage>0?P.jsxs("div",{className:"combat-dmg-body",key:n.combo,children:[
+    P.jsxs("div",{className:"combat-attacker-name",children:["👤 @",(n.lastAttacker||"Tu sĩ").replace(/^@/,"")]}),
+    P.jsx("div",{className:"combat-skill-tag",children:n.lastDamage>=20000?"🔥 Thập Long (150 Xu)":n.lastDamage>=8000?"🐉 Kim Long (80 Xu)":n.lastDamage>=5000?"🌧️ Mưa Kiếm (45 Xu)":n.lastDamage>=2500?"🗡️ Cự Kiếm (20 Xu)":n.lastDamage>=700?"✨ Kiếm Vàng (5 Xu)":"⚔️ Trảm Kích Kiếm Khí"}),
+    P.jsxs("div",{className:`combat-dmg-val ${n.lastDamage>=5000?"crit":""}`,children:[
+      P.jsx("span",{className:"minus",children:"−"}),
+      Jr(n.lastDamage),
+      P.jsx("span",{className:"dmg-unit",children:n.lastDamage>=5000?" CRIT!":" DMG"})
+    ]}),
+    P.jsx("div",{className:"combat-dmg-progress",children:P.jsx("div",{className:"combat-dmg-bar",style:{width:`${Math.min(100,Math.max(18,(n.lastDamage/25000)*100))}%`}})})
+  ]}):P.jsxs("div",{className:"combat-dmg-idle",children:[
+    P.jsx("span",{className:"idle-icon",children:"⚡"}),
+    P.jsx("span",{children:"Đang chờ xuất chiêu đánh Boss…"})
+  ]})
 ]}),
 (n.lastEliminated>0&&(Date.now()-(n.elimBannerTimer||0)<5000))&&P.jsxs("div",{
   className:"elimination-alert-banner",
