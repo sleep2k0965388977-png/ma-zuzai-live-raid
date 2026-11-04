@@ -1,0 +1,28 @@
+{
+  "name": "ma-zuzai-live-raid",
+  "version": "1.0.0",
+  "description": "MA ZUZAI - LIVE RAID BOSS 3D Game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "bridge": "node tiktok_bridge.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "threejs",
+    "react",
+    "live-raid",
+    "game-3d",
+    "ma-zuzai",
+    "tiktok-live"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "acorn": "^8.19.0",
+    "express": "^4.21.2",
+    "isomorphic-git": "^1.44.10",
+    "tiktok-live-connector": "^2.5.0",
+    "ws": "^8.22.1"
+  }
+}

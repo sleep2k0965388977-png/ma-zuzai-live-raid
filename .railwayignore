@@ -1,0 +1,9 @@
+node_modules/
+.git/
+scripts/
+tools/
+CHAT_HISTORY.md
+*.log
+.env
+DUONG_LINK_ONLINE.txt
+TUNNEL_URL.txt

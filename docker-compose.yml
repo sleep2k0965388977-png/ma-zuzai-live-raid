@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  ma-zuzai-raid:
+    build: .
+    container_name: ma_zuzai_live_raid
+    restart: always
+    ports:
+      - "3000:3000"
+      - "8081:8081"
+    environment:
+      - PORT=3000
+      - WS_PORT=8081
+      - NODE_ENV=production

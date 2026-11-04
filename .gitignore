@@ -1,0 +1,11 @@
+node_modules/
+.DS_Store
+*.log
+.env
+tools/
+DUONG_LINK_ONLINE.txt
+TUNNEL_URL.txt
+scripts/*.png
+scripts/temp_check.mjs
+scripts/meshy_page.html
+scripts/index-CT5dfJfs.committed.js
