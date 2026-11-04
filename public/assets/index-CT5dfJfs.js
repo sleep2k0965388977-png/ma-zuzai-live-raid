@@ -5312,7 +5312,7 @@ spawn(e,t){
   this.scene.add(r);
   const l={root:r,home:o,attack:0,skill:"attack",hit:!1};
   const _clips=ros.length>0?ros[n%ros.length].clips:(this.playerClips||[]);if(_clips&&_clips.length>0&&curTmpl){try{l.mixer=new fp(r);l.clips=_clips;this.playClip(l.mixer,_clips,"idle");}catch(e){}}
-  this.actors.set(e,l),this.state.players.push({username:e,avatar:t,damage:0,hp:100,color:n%8,lastActiveTime:Date.now()});
+  this.actors.set(e,l),this.state.players.push({username:e,avatar:t,damage:0,hp:100,color:n%8,joinTime:Date.now()+(this.state.players.length*10),lastActiveTime:Date.now()});
   if(n<16){
     const c=document.createElement("div");
     c.textContent=`@${e}`,this.labels.appendChild(c),this.labelNodes.set(e,c);
@@ -5406,7 +5406,11 @@ getXianxiaCrest(type){
 }
 updateLabelRanks(){
   if(!this.state||!this.state.players)return;
-  const sorted=[...this.state.players].sort((a,b)=>(b.damage||0)-(a.damage||0));
+  const sorted=[...this.state.players].sort((a,b)=>{
+    const diff=(b.damage||0)-(a.damage||0);
+    if(diff!==0)return diff;
+    return (a.joinTime||0)-(b.joinTime||0);
+  });
   for(let idx=0;idx<sorted.length;idx++){
     const p=sorted[idx],node=this.labelNodes.get(p.username);
     if(node){
@@ -5439,13 +5443,12 @@ publish(){this.updateLabelRanks(),this.state.queued=this.queue.size,this.state.c
   this.actors.forEach(a=>{if(a.wings){a.root.remove(a.wings);this.disposeObject(a.wings);a.wings=null;}}),this.beamTimer=0,this.beamGroup&&(this.beamGroup.visible=!1),
   this.planetCrashActive=!1,this.planetExploded=!1,this.shakeDuration=0,
   this.celestialPlanets&&this.celestialPlanets.forEach(p=>{p.obj.position.copy(p.home),p.obj.scale.setScalar(1),p.ring&&p.ring.position.copy(p.home)}),this.bursts.forEach(e=>{this.scene.remove(e.group),this.disposeObject(e.group)}),this.bursts=[],this.actors.forEach(e=>{e.attack=0,e.root.position.copy(e.home),e.root.rotation.z=0,e.root.visible=!0;const t=e.root.getObjectByName("swordArm");t&&(t.rotation.x=0)}),this.labelNodes.forEach(node=>{node.style.opacity="",node.style.filter=""}),this.state.totalEliminated=0,this.state.lastEliminated=0,this.state.recentJoin=null,this.setCamera("main"),this.log("Một trận raid mới bắt đầu.","system"),this.publish();if(this.topOpenerTimers){this.topOpenerTimers.forEach(clearTimeout);this.topOpenerTimers=[];}}getTopRankPlayers(count=5){
-  if(!this.state.players||this.state.players.length===0)return[];
-  return[...this.state.players].map(p=>{
-    const d=p.damage||0;
-    const base=85000+(Math.abs(p.username.charCodeAt(0)*1337+p.username.length*997)%45000);
-    const power=base+d*4;
-    return{...p,power};
-  }).sort((a,b)=>b.power-a.power).slice(0,count);
+  if(!this.state||!this.state.players||this.state.players.length===0)return[];
+  return[...this.state.players].sort((a,b)=>{
+    const diff=(b.damage||0)-(a.damage||0);
+    if(diff!==0)return diff;
+    return (a.joinTime||0)-(b.joinTime||0);
+  }).slice(0,count);
 }
 triggerNewMatchTopSkills(customList=null){
   if(this.topOpenerTimers){
@@ -5640,27 +5643,77 @@ eliminatePlayers(count,skillName="Đòn đánh Ma Tôn"){
   return 0;
 }
 playerLeaveRoom(username){
-  const actor=this.actors.get(username);
+  if(!this.state||!this.state.players)return;
+  if(!username){
+    const sorted=[...this.state.players].sort((a,b)=>{
+      const diff=(b.damage||0)-(a.damage||0);
+      if(diff!==0)return diff;
+      return (a.joinTime||0)-(b.joinTime||0);
+    });
+    if(sorted.length>0)username=sorted[0].username;
+    else return;
+  }
+  const clean=String(username).replace(/^@/,"").trim();
+  const target=this.state.players.find(p=>p.username===clean||p.username.toLowerCase()===clean.toLowerCase());
+  if(!target)return;
+  const realName=target.username;
+
+  // Xác định thứ hạng trước khi rời phòng
+  const sortedBefore=[...this.state.players].sort((a,b)=>{
+    const diff=(b.damage||0)-(a.damage||0);
+    if(diff!==0)return diff;
+    return (a.joinTime||0)-(b.joinTime||0);
+  });
+  const prevRank=sortedBefore.findIndex(p=>p.username===realName)+1;
+
+  // Boss tung đòn trảm sát kẻ đào tẩu khỏi phòng LIVE
+  const actor=this.actors.get(realName);
   if(actor&&actor.root){
     const pos=actor.root.position.clone();
-    this.effect(pos,"#ef4444",!0,3.5);
+    this.playClip(this.bossMixer,this.bossClips,"attack");
+    this.effect(pos,"#ef4444",!0,4.8);
+    this.effect(pos,"#7f1d1d",!0,3.2);
+    this.shake(.35,.8);
     this.audio&&this.audio.playHitImpact(!0);
     if(actor.wings){actor.root.remove(actor.wings);this.disposeObject(actor.wings);actor.wings=null;}
     this.scene.remove(actor.root);
     this.disposeObject(actor.root);
-    this.actors.delete(username);
+    this.actors.delete(realName);
   }
-  const node=this.labelNodes.get(username);
+
+  // Xóa bỏ hoàn toàn thẻ tên khỏi 3D
+  const node=this.labelNodes.get(realName);
   if(node){
     node.remove();
-    this.labelNodes.delete(username);
+    this.labelNodes.delete(realName);
   }
-  this.state.players=this.state.players.filter(p=>p.username!==username);
+
+  // Loại bỏ hoàn toàn khỏi danh sách người chơi và bảng xếp hạng
+  this.state.players=this.state.players.filter(p=>p.username!==realName);
   this.state.totalEliminated=(this.state.totalEliminated||0)+1;
   this.state.lastEliminated=1;
-  this.state.lastEliminatedSkill="Thoát phòng";
+  this.state.lastEliminatedSkill="Thoát phòng (Trảm sát)";
+  this.state.lastEliminatedUser=realName;
   this.state.elimBannerTimer=Date.now();
-  this.log(`🚪 @${username} đã thoát khỏi phòng LIVE · Ma Tôn trừng phạt xóa khỏi chiến trường!`,"boss");
+
+  // Xác định người kế vị thăng hạng
+  const sortedAfter=[...this.state.players].sort((a,b)=>{
+    const diff=(b.damage||0)-(a.damage||0);
+    if(diff!==0)return diff;
+    return (a.joinTime||0)-(b.joinTime||0);
+  });
+  const newTop1=sortedAfter[0];
+
+  if(prevRank===1&&newTop1){
+    this.log(`☠️ @${realName} (Top 1) thoát phòng · Ma Tôn trảm sát! @${newTop1.username} CHÍNH THỨC THĂNG HẠNG LÊN TOP 1 VÔ THƯỢNG CHÍ TÔN!`,"boss");
+  }else if(prevRank>1){
+    this.log(`🚪 @${realName} (Hạng #${prevRank}) thoát phòng · Ma Tôn trừng phạt! Tất cả đạo hữu phía sau đều được thăng 1 hạng!`,"boss");
+  }else{
+    this.log(`🚪 @${realName} đã thoát khỏi phòng LIVE · Ma Tôn trừng phạt xóa khỏi chiến trường!`,"boss");
+  }
+
+  // Lập tức cập nhật lại danh hiệu 3D (vương miện, cánh, bảng tên) và bảng xếp hạng
+  this.updateLabelRanks();
   this.publish();
 }
 shake(intensity,duration){
@@ -6138,10 +6191,9 @@ Mt.useEffect(()=>{
     P.jsxs("div",{
       className:"elim-info",
       children:[
-        P.jsxs("div",{className:"elim-title",children:["MA ZUZAI XUẤT CHIÊU · ",P.jsxs("b",{className:"elim-hit-count",children:["ĐÃ LOẠI ",n.lastEliminated," NGƯỜI!"]})]}),
+        P.jsxs("div",{className:"elim-title",children:["MA ZUZAI TRẢM SÁT · ",P.jsxs("b",{className:"elim-hit-count",children:[n.lastEliminatedUser?`ĐÃ DIỆT @${n.lastEliminatedUser}`:`ĐÃ LOẠI ${n.lastEliminated} NGƯỜI!`]})]}),
         P.jsxs("div",{className:"elim-sub",children:[
-          "Còn sống: ",P.jsxs("b",{children:[n.players.filter(p=>!p.eliminated).length," tu sĩ"]}),
-          " · Tổng bị loại: ",P.jsx("b",{className:"total-elim-tag",children:(n.totalEliminated||0).toLocaleString()})
+          n.lastEliminatedUser?"Đã đào tẩu khỏi phòng LIVE · Các đạo hữu phía sau được thăng 1 hạng!":P.jsxs(P.Fragment,{children:["Còn sống: ",P.jsxs("b",{children:[n.players.filter(p=>!p.eliminated).length," tu sĩ"]})," · Tổng bị loại: ",P.jsx("b",{className:"total-elim-tag",children:(n.totalEliminated||0).toLocaleString()})]})
         ]})
       ]
     })
@@ -6162,12 +6214,16 @@ Mt.useEffect(()=>{
   ]
 }),P.jsxs("div",{className:"arena-right-boards",children:[
   (function(){
-  const topList=[...n.players].map((p,idx)=>{
+  const sortedRankPlayers=[...n.players].sort((a,b)=>{
+    const diff=(b.damage||0)-(a.damage||0);
+    if(diff!==0)return diff;
+    return (a.joinTime||0)-(b.joinTime||0);
+  });
+  const topList=sortedRankPlayers.slice(0,5).map((p,cIdx)=>{
     const d=p.damage||0;
-    const base=85000+(Math.abs(p.username.charCodeAt(0)*1337+p.username.length*997)%45000);
-    const power=base+d*4;
-    return{...p,power,rawD:d};
-  }).sort((a,b)=>b.power-a.power).slice(0,5);
+    const power=d>0?(50000+d*5):Math.max(10000,50000-cIdx*5000);
+    return{...p,power,rawD:d,rank:cIdx+1};
+  });
   const realms=["Đại Thừa Kỳ","Hóa Thần Đỉnh","Nguyên Anh","Kim Đan Kỳ","Trúc Cơ Đỉnh"];
   const maxP=Math.max(1,topList[0]?.power||1);
   return P.jsxs("div",{className:"top-cultivators-board",children:[
@@ -6452,7 +6508,7 @@ P.jsxs("button",{
   style:{gridColumn:"1 / -1",background:"linear-gradient(135deg, rgba(234,179,8,0.32), rgba(236,72,153,0.32))",borderColor:"#eab308",color:"#fef08a",fontWeight:"bold",padding:"8px 10px",fontSize:"12.5px",boxShadow:"0 0 12px rgba(234,179,8,0.3)"},
   onClick:()=>{var O;return(O=t.current)==null?void 0:O.triggerNewMatchTopSkills();},
   children:[P.jsx("span",{children:"👑"})," Đãi Ngộ Khai Trận Top 1 - 5 (1/3 Sức Mạnh Chuẩn)"]
-}),P.jsxs("button",{onClick:()=>{var O;return(O=t.current)==null?void 0:O.addPlayer(o.trim()||"kiemkhach",1)},children:[P.jsx(dy,{size:16,className:"green"})," +1 người"]}),P.jsxs("button",{style:{background:"rgba(239,68,68,0.22)",border:"1px solid rgba(239,68,68,0.5)",color:"#fca5a5",cursor:"pointer"},onClick:()=>{var O;return(O=t.current)==null?void 0:O.playerLeaveRoom(o.trim()||"kiemkhach")},children:[P.jsx("span",{children:"🚪"})," Thoát phòng"]}),
+}),P.jsxs("button",{onClick:()=>{var O;return(O=t.current)==null?void 0:O.addPlayer(o.trim()||"kiemkhach",1)},children:[P.jsx(dy,{size:16,className:"green"})," +1 người"]}),P.jsxs("button",{style:{background:"rgba(239,68,68,0.22)",border:"1px solid rgba(239,68,68,0.5)",color:"#fca5a5",cursor:"pointer"},onClick:()=>{var O;if(!t.current)return;const tgt=o.trim()||(t.current.getTopRankPlayers?t.current.getTopRankPlayers(1)[0]?.username:null)||(t.current.state.players[0]?.username);if(tgt)t.current.playerLeaveRoom(tgt);},children:[P.jsx("span",{children:"🚪"})," Thoát phòng (Boss trảm)"]}),
 P.jsxs("div",{style:{gridColumn:"1 / -1",display:"flex",gap:4,marginTop:4,marginBottom:6},children:[
   [10, 50, 100, 500, 1000].map(cnt=>P.jsx("button",{
     key:cnt,
