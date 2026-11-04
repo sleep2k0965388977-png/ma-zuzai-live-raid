@@ -33,3 +33,12 @@
 - **Tương Tác TikTok LIVE Thời Gian Thực**:
   - Tự động kết nối Webcast TikTok: Bình luận, Thả tim, Tặng quà, Vào phòng, Chia sẻ và Theo dõi.
   - Người xem vào phòng live tự động xuất hiện nhân vật 3D trên sàn đấu mang nhãn tên của chính người đó.
+- **Khung Báo Đỏ Sát Thương Đánh Boss Siêu Cấp**:
+  - Giao diện tinh giản tối đa, chỉ hiển thị duy nhất số sát thương khổng lồ sắc nét mang tone màu đỏ rực lửa cảnh báo chiến đấu (`#ff2b2b`, neon red glow).
+  - Chuẩn hóa mỗi đòn kiếm trúng Boss gây sát thương uy lực trong dải **1.000 – 1.500 sức mạnh**.
+- **Hiển Thị Thẻ Tên Tu Sĩ 100% Người Chơi**:
+  - Hỗ trợ số lượng người xem không giới hạn, tất cả người chơi dù trong hay ngoài Top đều có thẻ tên tiên hiệp sang trọng.
+  - Khi xuất chiêu bay lên đánh Boss, thẻ tên tự động nâng cao độ, tỏa hào quang hoàng kim 1.25x rực rỡ và luôn ưu tiên hiển thị trên cùng (`z-index: 99999`).
+- **Khu Vực Xuất Hiện (Spawn Zone) Chuẩn Sàn Đấu**:
+  - Tối ưu hóa vùng xuất hiện của tu sĩ trong khoảng bán kính từ 7.5m đến 21.0m, góc quạt 124 độ dàn trải đều khắp ma trận phía trước Boss.
+
