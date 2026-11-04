@@ -4530,87 +4530,29 @@ version 0.8.3
   startBGM(){
     if(!this.enabled)return;
     this.initContext();
-    if(!this.ctx||this._bgmTimer)return;
-    // Thang âm Tiên Hiệp Ngũ Cung (D-Minor Pentatonic Guzheng & Epic Taiko Drums)
-    const guzhengNotes=[146.83, 174.61, 196.00, 220.00, 261.63, 293.66, 349.23, 392.00, 440.00];
-    const bassChords=[73.42, 87.31, 110.00, 65.41]; // D2, F2, A2, C2
-    this._step=0;
-
-    const tick=()=>{
-      if(!this.enabled||!this.ctx)return;
-      const now=this.ctx.currentTime;
-      const bar=Math.floor(this._step/4)%bassChords.length;
-
-      // 1. Nhịp Trống Trận Taiko Trầm Hùng (Mỗi ô nhịp)
-      if(this._step%4===0){
-        // Trống Taiko Bass
-        const dOsc=this.ctx.createOscillator();
-        const dGain=this.ctx.createGain();
-        dOsc.type="sine";
-        dOsc.frequency.setValueAtTime(135,now);
-        dOsc.frequency.exponentialRampToValueAtTime(26,now+0.48);
-        dGain.gain.setValueAtTime(0.24,now); // Âm lượng trống mạnh mẽ
-        dGain.gain.exponentialRampToValueAtTime(0.001,now+0.52);
-        dOsc.connect(dGain);dGain.connect(this.ctx.destination);
-        dOsc.start(now);dOsc.stop(now+0.52);
-
-        // Hợp âm trầm bi tráng (Epic Drone Pad)
-        const bOsc=this.ctx.createOscillator();
-        const bGain=this.ctx.createGain();
-        bOsc.type="sawtooth";
-        bOsc.frequency.setValueAtTime(bassChords[bar],now);
-        const bFilt=this.ctx.createBiquadFilter();
-        bFilt.type="lowpass";
-        bFilt.frequency.setValueAtTime(220,now);
-        bGain.gain.setValueAtTime(0.12,now);
-        bGain.gain.exponentialRampToValueAtTime(0.001,now+2.2);
-        bOsc.connect(bFilt);bFilt.connect(bGain);
-        bGain.connect(this.ctx.destination);
-        bOsc.start(now);bOsc.stop(now+2.2);
+    if(!this._bgmAudio){
+      this._bgmAudio=new Audio('./assets/bgm_mashup.mp3');
+      this._bgmAudio.loop=!0;
+      this._bgmAudio.volume=0.40;
+      this._bgmAudio.preload='auto';
+      this._bgmAudio.onended=()=>{
+        if(this.enabled&&this._bgmAudio){
+          this._bgmAudio.currentTime=0;
+          this._bgmAudio.play().catch(()=>{});
+        }
+      };
+    }
+    this._bgmAudio.volume=0.40;
+    if(this._bgmAudio.paused){
+      const p=this._bgmAudio.play();
+      if(p&&typeof p.catch==='function'){
+        p.catch(()=>{});
       }
-
-      // 2. Nhịp Trống Đệm Nhẹ (Nhịp 2 và 4)
-      if(this._step%2===1){
-        const sOsc=this.ctx.createOscillator();
-        const sGain=this.ctx.createGain();
-        sOsc.type="triangle";
-        sOsc.frequency.setValueAtTime(85,now);
-        sOsc.frequency.exponentialRampToValueAtTime(32,now+0.22);
-        sGain.gain.setValueAtTime(0.09,now);
-        sGain.gain.exponentialRampToValueAtTime(0.001,now+0.25);
-        sOsc.connect(sGain);sGain.connect(this.ctx.destination);
-        sOsc.start(now);sOsc.stop(now+0.25);
-      }
-
-      // 3. Tiếng Đàn Cổ Cầm / Guzheng Ngũ Cung Tiên Hiệp réo rắt
-      const noteIdx=(this._step*3+bar*2)%guzhengNotes.length;
-      const note=guzhengNotes[noteIdx];
-      const mOsc=this.ctx.createOscillator();
-      const mGain=this.ctx.createGain();
-      mOsc.type="triangle";
-      mOsc.frequency.setValueAtTime(note,now);
-      mGain.gain.setValueAtTime(0.14,now); // Âm lượng đàn réo rắt
-      mGain.gain.exponentialRampToValueAtTime(0.001,now+0.75);
-      
-      const mFilt=this.ctx.createBiquadFilter();
-      mFilt.type="bandpass";
-      mFilt.frequency.setValueAtTime(note*1.8,now);
-      mFilt.Q.value=1.5;
-
-      mOsc.connect(mFilt);mFilt.connect(mGain);
-      mGain.connect(this.ctx.destination);
-      mOsc.start(now);mOsc.stop(now+0.75);
-
-      this._step++;
-    };
-
-    tick();
-    this._bgmTimer=setInterval(tick,480);
+    }
   }
   stopBGM(){
-    if(this._bgmTimer){
-      clearInterval(this._bgmTimer);
-      this._bgmTimer=null;
+    if(this._bgmAudio){
+      this._bgmAudio.pause();
     }
   }
   playBossRoar(type="growl"){
