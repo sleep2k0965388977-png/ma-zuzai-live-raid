@@ -1,15 +1,34 @@
 <!doctype html>
 <html lang="vi">
   <head>
+    <script>
+      (function() {
+        function checkLiveMode() {
+          var p = new URLSearchParams(window.location.search);
+          var isLiveParam = p.has('live') || p.has('obs') || p.has('stream') || p.has('studio');
+          var isPortrait = (window.innerHeight > window.innerWidth) && (window.innerWidth <= 1200);
+          if (isLiveParam || isPortrait) {
+            document.documentElement.classList.add('live-mode');
+            if (document.body) document.body.classList.add('live-mode');
+          } else {
+            document.documentElement.classList.remove('live-mode');
+            if (document.body) document.body.classList.remove('live-mode');
+          }
+        }
+        checkLiveMode();
+        window.addEventListener('resize', checkLiveMode);
+        document.addEventListener('DOMContentLoaded', checkLiveMode);
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MA ZUZAI - Linh thể bị phong ấn | LIVE RAID</title>
-    <script type="module" crossorigin src="./assets/index-CT5dfJfs.js?v=1793804108840"></script>
+    <script type="module" crossorigin src="./assets/index-CT5dfJfs.js?v=1793804609764"></script>
     <link rel="modulepreload" crossorigin href="./assets/ui-vendor-Cha-yV00.js">
     <link rel="modulepreload" crossorigin href="./assets/utils-vendor-Dj2Kb4yu.js">
     <link rel="modulepreload" crossorigin href="./assets/query-vendor-p8IFD2j6.js">
     <link rel="modulepreload" crossorigin href="./assets/router-vendor-BcGNY1H7.js">
-    <link rel="stylesheet" crossorigin href="./assets/index-Cne2fmcZ.css?v=1793803030884">
+    <link rel="stylesheet" crossorigin href="./assets/index-Cne2fmcZ.css?v=1793804609764">
   </head>
   <body>
     <div id="root"></div>
