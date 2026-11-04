@@ -4836,7 +4836,7 @@ version 0.8.3
         if(sk.pos.distanceTo(sk.target)<=2.5||sk.progress>45){
           if(!sk.hit){
             sk.hit=!0;
-            if(!this.isOpeningCeremony&&!sk.isOpener)this.damage(750);
+            if(!this.isOpeningCeremony&&!sk.isOpener)this.damage(1000+Math.floor(Math.random()*501));
             this.effect(sk.target,"#fde047",!1,3);
             this.shake(.18,.6);
           }
@@ -4883,7 +4883,7 @@ version 0.8.3
               if(cur.distanceTo(sw.target)<=2.0||sw.progress>40){
                 sw.hit=!0;
                 sw.mesh.visible=!1;
-                if(!this.isOpeningCeremony&&!sk.isOpener)this.damage(180);
+                if(!this.isOpeningCeremony&&!sk.isOpener)this.damage(1000+Math.floor(Math.random()*501));
                 this.effect(sw.target,Math.random()>.5?"#fde047":"#38bdf8",!1,1.8);
                 this.shake(.12,.3);
               }else allDone=!1;
@@ -5046,7 +5046,7 @@ this.brazierLights&&this.brazierLights.forEach((blt,idx)=>{blt.intensity=4.2+Mat
     }
     if(h>.9&&!o.hit){
       o.hit=!0;
-      const g=950+Math.round(this.state.energy*4);
+      const g=1000+Math.floor(Math.random()*501);
       this.damage(g,l);
       this.effect(Ft(o.root.position.x,3.2,-.6),"#dbc0ff",!1,2.5);
     }
@@ -6204,18 +6204,15 @@ Mt.useEffect(()=>{
   P.jsxs("span",{children:[P.jsx($h,{size:12})," ",Math.round(n.energy),"%"]})
 ]}),P.jsxs("div",{className:"combat-dmg-frame",children:[
   P.jsxs("div",{className:"combat-dmg-header",children:[
-    P.jsxs("span",{className:"combat-title",children:["⚔️ SÁT THƯƠNG GÂY RA"]}),
-    n.lastDamage>0?P.jsxs("span",{className:"combat-combo-badge",children:["🔥 x",n.combo]}):P.jsx("span",{className:"combat-live-dot",children:"● SẴN SÀNG"})
+    P.jsxs("span",{className:"combat-title",children:["⚔️ SÁT THƯƠNG ĐÁNH BOSS"]}),
+    n.lastDamage>0?P.jsxs("span",{className:"combat-combo-badge",children:["🔥 x",n.combo]}):P.jsx("span",{className:"combat-live-dot",children:"● BÁO ĐỎ SẴN SÀNG"})
   ]}),
   n.lastDamage>0?P.jsxs("div",{className:"combat-dmg-body",key:n.combo,children:[
-    P.jsxs("div",{className:"combat-attacker-name",children:["👤 @",(n.lastAttacker||"Tu sĩ").replace(/^@/,"")]}),
-    P.jsx("div",{className:"combat-skill-tag",children:n.lastDamage>=20000?"🔥 Thập Long (150 Xu)":n.lastDamage>=8000?"🐉 Kim Long (80 Xu)":n.lastDamage>=5000?"🌧️ Mưa Kiếm (45 Xu)":n.lastDamage>=2500?"🗡️ Cự Kiếm (20 Xu)":n.lastDamage>=700?"✨ Kiếm Vàng (1-10 Xu)":"⚔️ Trảm Kích Kiếm Khí"}),
     P.jsxs("div",{className:`combat-dmg-val ${n.lastDamage>=5000?"crit":""}`,children:[
       P.jsx("span",{className:"minus",children:"−"}),
       Jr(n.lastDamage),
-      P.jsx("span",{className:"dmg-unit",children:n.lastDamage>=5000?" CRIT!":" DMG"})
-    ]}),
-    P.jsx("div",{className:"combat-dmg-progress",children:P.jsx("div",{className:"combat-dmg-bar",style:{width:`${Math.min(100,Math.max(18,(n.lastDamage/25000)*100))}%`}})})
+      P.jsx("span",{className:"dmg-unit",children:" DMG"})
+    ]})
   ]}):P.jsxs("div",{className:"combat-dmg-idle",children:[
     P.jsx("span",{className:"idle-icon",children:"⚡"}),
     P.jsx("span",{children:"Đang chờ xuất chiêu đánh Boss…"})

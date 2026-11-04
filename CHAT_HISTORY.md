@@ -696,3 +696,25 @@
        - Tỷ lệ hiển thị phóng to 1.25x (`scale: 1.25`), viền hào quang hoàng kim rực rỡ (`#fde047`, phát sáng vàng `0 0 18px #eab308`), chữ tên màu trắng phát quang 9.5px cực kỳ nổi bật trên luồng sáng của Boss.
        - Hiệu ứng nhịp đập linh khí liên tục (`xxAttackPulse`) trong suốt thời gian bay lượn xuất chiêu.
 
+---
+
+## 41. Tối Giản Khung Báo Đỏ Sát Thương Đánh Boss & Chuẩn Hóa Lực Chiến Kiếm 1.000 - 1.500
+- **Yêu cầu từ người dùng**:
+  > *"bỏ cái này đi chỉ để độc số sát thương đánh boss đếm kiềm 1000-1500 xức mạnh đánh lên boss ý kiểu nó báo đỏ sat thương gây ra ý"* (kèm ảnh chụp cận cảnh khung `combat-dmg-frame` đang hiển thị dòng `👤 @Đội hình`, nhãn `✨ Kiếm Vàng (1-10 Xu)` và số vàng `- 1.500 DMG`).
+- **Phân tích yêu cầu & Thiết kế lại**:
+  1. *Lược bỏ hoàn toàn các thông tin rườm rà*:
+     - Loại bỏ dòng tên người chơi / đội hình (`combat-attacker-name`).
+     - Loại bỏ nhãn tên chiêu thức (`combat-skill-tag`).
+     - Loại bỏ thanh progress bar dưới đáy khung.
+     - Giữ khung tập trung tuyệt đối vào DUY NHẤT một mục đích: **Báo Đỏ Sát Thương Đánh Boss**.
+  2. *Thiết kế Giao Diện Báo Đỏ Siêu Lực (Crimson Blood Alert)*:
+     - **Tiêu đề**: `⚔️ SÁT THƯƠNG ĐÁNH BOSS` ánh đỏ neon kèm huy hiệu combo lửa rực rỡ (`🔥 xCombo`).
+     - **Số sát thương**: Chữ số hiển thị cỡ lớn 24px đậm nét `900`, mang tone **đỏ rực lửa** (`#ff2b2b` đến `#ff0033`), bao phủ bởi hiệu ứng phát quang đỏ đậm (`0 0 16px rgba(255, 43, 43, 0.95), 0 0 28px rgba(220, 38, 38, 0.7)`).
+     - **Viền khung**: Chuyển sang viền đỏ cảnh báo ma trận `rgba(239, 68, 68, 0.85)` phát sáng nhịp đập ánh đỏ liên tục.
+     - **Số 3D bay trên đầu Boss (`.damage-hud > span`)**: Đồng bộ đổi từ vàng nhạt sang **đỏ rực rỡ** 32px uy lực để người xem live cảm nhận ngay sự dồn dập của đòn đánh.
+  3. *Chuẩn hóa sát thương đòn kiếm trong khoảng 1.000 - 1.500 sức mạnh*:
+     - Đòn kiếm vàng (1-10 Xu): Chuẩn hóa sát thương thành `1000 - 1500` ngẫu nhiên mỗi nhát chém.
+     - Đòn mưa kiếm: Mỗi mũi kiếm rơi trúng Boss gây chuẩn `1000 - 1500` sức mạnh.
+     - Đòn đánh cận chiến của tu sĩ: Sát thương chuẩn hóa trong khoảng `1000 - 1500` sức mạnh.
+
+
