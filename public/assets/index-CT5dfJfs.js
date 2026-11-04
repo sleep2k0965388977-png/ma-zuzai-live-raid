@@ -5270,7 +5270,7 @@ spawn(e,t){
   const n=this.actors.size;
   const max3D=12;
   const ros=this.playerRoster||[],curTmpl=(ros.length>0)?ros[n%ros.length].template:(this.playerTemplate||null);
-  const r=curTmpl?p0(curTmpl):SP(n);
+  let r=null;if(curTmpl){try{r=curTmpl.clone(!0);}catch(err){r=SP(n);}}if(!r)r=SP(n);
   r.scale.setScalar(.62);
   r.renderOrder=10;
   r.traverse(ch=>{
@@ -5311,7 +5311,7 @@ spawn(e,t){
   r.rotation.y=faceAngle;
   this.scene.add(r);
   const l={root:r,home:o,attack:0,skill:"attack",hit:!1};
-  curTmpl&&(l.mixer=new fp(r),l.clips=ros.length>0?ros[n%ros.length].clips:this.playerClips,this.playClip(l.mixer,l.clips,"idle"));
+  const _clips=ros.length>0?ros[n%ros.length].clips:(this.playerClips||[]);if(_clips&&_clips.length>0&&curTmpl){try{l.mixer=new fp(r);l.clips=_clips;this.playClip(l.mixer,_clips,"idle");}catch(e){}}
   this.actors.set(e,l),this.state.players.push({username:e,avatar:t,damage:0,hp:100,color:n%8});
   if(n<16){
     const c=document.createElement("div");
