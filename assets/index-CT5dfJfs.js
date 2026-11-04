@@ -6028,62 +6028,64 @@ async loadPrebuiltPlayerModels(){
     ];
     this.playerRoster=[];
 
-    for(const def of modelDefs){
-      try{
-        const gltf=await loader.loadAsync(def.file);
-        const scene=gltf.scene;
-        const box=new ri().setFromObject(scene);
-        const size=box.getSize(new B);
-        const targetH=2.45;
-        scene.scale.multiplyScalar(targetH/(size.y||1));
+    const results = await Promise.all(modelDefs.map(async (def) => {
+      try {
+        const gltf = await loader.loadAsync(def.file);
+        const scene = gltf.scene;
+        const box = new ri().setFromObject(scene);
+        const size = box.getSize(new B);
+        const targetH = 2.45;
+        scene.scale.multiplyScalar(targetH / (size.y || 1));
 
-        const updatedBox=new ri().setFromObject(scene);
-        const center=updatedBox.getCenter(new B);
-        scene.position.sub(Ft(center.x,updatedBox.min.y,center.z));
+        const updatedBox = new ri().setFromObject(scene);
+        const center = updatedBox.getCenter(new B);
+        scene.position.sub(Ft(center.x, updatedBox.min.y, center.z));
 
-        scene.traverse(m=>{
-          if(m instanceof mt){
-            m.castShadow=!1;
-            m.receiveShadow=!1;
-            m.frustumCulled=!1;
-            m.renderOrder=10;
-            if(m.material){
-              m.material.side=2;
-              m.material.roughness=0.38;
-              m.material.metalness=0.3;
-              m.material.depthWrite=!0;
+        scene.traverse(m => {
+          if (m instanceof mt) {
+            m.castShadow = !1;
+            m.receiveShadow = !1;
+            m.frustumCulled = !1;
+            m.renderOrder = 10;
+            if (m.material) {
+              m.material.side = 2;
+              m.material.roughness = 0.38;
+              m.material.metalness = 0.3;
+              m.material.depthWrite = !0;
             }
           }
         });
 
-        // Aura is handled by materials and shared formation light
-        if(!this.playerCampLight){
-          const pLight=new bl("#fef08a",1.8,24);
-          pLight.position.set(0,4.2,6.5);
-          this.scene.add(pLight);
-          this.playerCampLight=pLight;
-        }
-
-        const templateGrp=new cn();
-        templateGrp.name=def.name;
+        const templateGrp = new cn();
+        templateGrp.name = def.name;
         templateGrp.add(scene);
-        templateGrp.userData={is3D:!0,isMeshy:!0,name:def.name};
+        templateGrp.userData = { is3D: !0, isMeshy: !0, name: def.name };
 
-        this.playerRoster.push({
-          name:def.name,
-          template:templateGrp,
-          clips:gltf.animations||[]
-        });
-      }catch(err){
-        console.warn("Lỗi nạp mô hình người chơi:",def.name,err);
+        return {
+          name: def.name,
+          template: templateGrp,
+          clips: gltf.animations || []
+        };
+      } catch (err) {
+        console.warn("Lỗi nạp mô hình người chơi:", def.name, err);
+        return null;
       }
+    }));
+
+    if (!this.playerCampLight) {
+      const pLight = new bl("#fef08a", 1.8, 24);
+      pLight.position.set(0, 4.2, 6.5);
+      this.scene.add(pLight);
+      this.playerCampLight = pLight;
     }
 
-    if(this.playerRoster.length>0){
-      this.playerTemplate=this.playerRoster[0].template;
-      this.playerClips=this.playerRoster[0].clips;
+    this.playerRoster = results.filter(Boolean);
+
+    if (this.playerRoster.length > 0) {
+      this.playerTemplate = this.playerRoster[0].template;
+      this.playerClips = this.playerRoster[0].clips;
       this.refreshActors();
-      this.log(`✨ ĐÃ NẠP THÀNH CÔNG 2 NHÂN VẬT NGƯỜI CHƠI MESHY 3D (${this.playerRoster.map(r=>r.name).join(" & ")})!`,"system");
+      this.log(`✨ ĐÃ NẠP THÀNH CÔNG ${this.playerRoster.length} NHÂN VẬT NGƯỜI CHƠI MESHY 3D CỰC NHANH!`, "system");
       this.publish();
     }
   }catch(e){

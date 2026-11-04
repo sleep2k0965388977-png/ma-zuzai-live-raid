@@ -16,9 +16,16 @@ const WS_PORT = process.env.WS_PORT || 8081;
 
 // 1. Phục vụ toàn bộ static files (HTML, CSS, JS, GLB 3D models)
 app.use(express.static(path.join(__dirname), {
+  maxAge: '30d',
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.glb')) {
       res.setHeader('Content-Type', 'model/gltf-binary');
+      res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');
+    } else if (filePath.endsWith('.mp3')) {
+      res.setHeader('Content-Type', 'audio/mpeg');
+      res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');
+    } else if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
+      res.setHeader('Cache-Control', 'public, max-age=86400');
     }
   }
 }));
