@@ -6179,8 +6179,6 @@ Mt.useEffect(()=>{
     P.jsx("i",{className:"phase-pin",style:{left:"25%"}}),
     P.jsx("i",{className:"phase-pin",style:{left:"50%"}}),
     P.jsx("i",{className:"phase-pin",style:{left:"75%"}})
-  ]}),
-  null
   ]})
 ]}),P.jsxs("div",{className:"raid-side-hud",children:[
   P.jsxs("span",{className:"alive-count-badge",title:"Số tu sĩ đang sống",children:[P.jsx(Kh,{size:12})," ",(n.players.filter(p=>!p.eliminated).length).toLocaleString()]}),
