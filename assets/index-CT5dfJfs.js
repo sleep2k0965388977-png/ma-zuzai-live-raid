@@ -4455,7 +4455,7 @@ version 0.8.3
 };class wP{constructor(){pt(this,"events",[]);pt(this,"seen",new Set);pt(this,"likes",null)}push(e){if(!this.seen.has(e.id)){if(this.seen.add(e.id),this.seen.size>2e3&&this.seen.delete(this.seen.values().next().value),e.type==="like"){this.likes=this.likes?{...e,value:Math.min(1e4,this.likes.value+e.value)}:e;return}if(this.events.length>=200){if(this.events.sort((t,n)=>n.priority-t.priority),e.priority<=this.events[this.events.length-1].priority)return;this.events.pop()}this.events.push(e),this.events.sort((t,n)=>n.priority-t.priority||t.timestamp-n.timestamp)}}next(){return this.events.shift()??this.takeLikes()}takeLikes(){const e=this.likes;return this.likes=null,e}get size(){return this.events.length+(this.likes?1:0)}clear(){this.events=[],this.likes=null,this.seen.clear()}}class TP{constructor(e){this.queue=e}receive(e){if(e.type==="comment_batch"&&Array.isArray(e.items)){for(let i=0;i<e.items.length;i++)this.receive(e.items[i]);return;}if(!e.username||!Number.isFinite(e.value)||e.value<0)return;const t=e.type==="gift"?e.skill==="ultimate"?5:e.skill==="large"?4:3:e.type==="comment"?2:1;this.queue.push({...e,username:e.username.replace(/^@/,"").slice(0,30),priority:t})}test(e,t,n,r=1){this.receive({id:crypto.randomUUID(),type:e,username:t,skill:n,value:r,timestamp:Date.now()})}}class EP{static phase(e,t){const n=e/t;return n>.7?1:n>.4?2:n>.1?3:4}}class AP{static sorted(e){return[...e].sort((t,n)=>n.damage-t.damage)}}class PP{
   constructor(){
     pt(this,"ctx",null);
-    pt(this,"enabled",!1);
+    pt(this,"enabled",!0);
     this._bgmTimer=null;
     this._windNode=null;
     this._step=0;
@@ -4531,9 +4531,9 @@ version 0.8.3
     if(!this.enabled)return;
     this.initContext();
     if(!this._bgmAudio){
-      this._bgmAudio=new Audio('./assets/bgm_mashup.mp3');
-      this._bgmAudio.loop=!0;
-      this._bgmAudio.volume=0.40;
+      this._bgmAudio=new Audio('/assets/bgm_mashup.mp3');
+      this._bgmAudio.loop=true;
+      this._bgmAudio.volume=0.20;
       this._bgmAudio.preload='auto';
       this._bgmAudio.onended=()=>{
         if(this.enabled&&this._bgmAudio){
@@ -4542,12 +4542,34 @@ version 0.8.3
         }
       };
     }
-    this._bgmAudio.volume=0.40;
-    if(this._bgmAudio.paused){
-      const p=this._bgmAudio.play();
-      if(p&&typeof p.catch==='function'){
-        p.catch(()=>{});
+    this._bgmAudio.volume=0.20;
+    this._bgmAudio.loop=true;
+    const _playNow=()=>{
+      if(this._bgmAudio&&this.enabled&&this._bgmAudio.paused){
+        const p=this._bgmAudio.play();
+        if(p&&typeof p.catch==='function'){
+          p.catch(()=>{
+            const _unlock=()=>{
+              if(this._bgmAudio&&this.enabled)this._bgmAudio.play().catch(()=>{});
+              if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume().catch(()=>{});
+              window.removeEventListener('click',_unlock);
+              window.removeEventListener('pointerdown',_unlock);
+              window.removeEventListener('keydown',_unlock);
+            };
+            window.addEventListener('click',_unlock,{once:true});
+            window.addEventListener('pointerdown',_unlock,{once:true});
+            window.addEventListener('keydown',_unlock,{once:true});
+          });
+        }
       }
+    };
+    _playNow();
+    if(!this._bgmRetryTimer){
+      this._bgmRetryTimer=setInterval(()=>{
+        if(this.enabled&&this._bgmAudio&&this._bgmAudio.paused){
+          _playNow();
+        }
+      },2000);
     }
   }
   stopBGM(){
@@ -5025,7 +5047,7 @@ if(f){
   }
   (c&&c.hp<=0)?f.classList.add("down"):f.classList.remove("down");
 }}),this.bursts=this.bursts.filter(o=>{o.age+=e;const l=o.age/o.duration,c=o.group.children[0];c.scale.setScalar(1+l*8),c.material.opacity=1-l;const f=o.group.children[1],u=f.geometry.attributes.position;for(let h=0;h<u.count;h++){const d=o.velocity[h];u.setXYZ(h,d.x*o.age,d.y*o.age-o.age*o.age*.4,d.z*o.age)}if(u.needsUpdate=!0,f.material.opacity=1-l,o.group.children[2]){const h=o.group.children[2];h.material.opacity=(1-l)*.5,h.scale.x=1+Math.sin(o.age*18)*.3}return l>=1?(this.scene.remove(o.group),this.disposeObject(o.group),!1):!0});if(this.targetActor&&this.targetActor.root&&this.cameraTimer>0){const curP=this.targetActor.root.position;this.lookTarget.lerp(Ft(curP.x,curP.y+1.1,curP.z),1-Math.exp(-e*6));const isGift=this.targetActor.isGift||this.targetActor.skill!=="attack",camDistZ=isGift?5.6:4.8,camElevY=isGift?Math.max(3.2,curP.y-0.4):Math.max(2.4,curP.y+0.2),sideX=(curP.x>=0?1.5:-1.5)*(isGift?0.8:0.6),targetCamPos=Ft(curP.x*0.4+sideX,camElevY,curP.z+camDistZ);this.cameraTarget.lerp(targetCamPos,1-Math.exp(-e*5.5));}this.cameraTimer-=e,this.cameraTimer<=0&&this.state.camera!=="Chính diện"&&(this.targetActor=null,this.setCamera("main")),this.camera.position.lerp(this.cameraTarget,1-Math.exp(-e*3.5)),this.camera.lookAt(this.lookTarget),
-  this.shakeDuration>0&&(this.shakeDuration-=e,this.camera.position.x+=(Math.random()-.5)*this.shakeIntensity*(this.shakeDuration/1.8),this.camera.position.y+=(Math.random()-.5)*this.shakeIntensity*(this.shakeDuration/1.8)),this.state.camera==="Thiên kiếp"&&(this.camera.position.x+=Math.sin(s*50)*.025)}this.composer.render();try{if(this.pixelFX)this.pixelFX.updateAndRender(e);}catch(err){};this.publishTimer+=e,this.publishTimer>.2&&(this.publishTimer=0,this.state.fps=Math.min(60,Math.round(1/Math.max(e,.001))),this.publish())});this.host=e,this.update=t,this.renderer=new VE({antialias:!0,alpha:!1,powerPreference:"high-performance"}),this.renderer.setPixelRatio(Math.min(Math.max(window.devicePixelRatio||1,2.0),2.5)),this.renderer.shadowMap.enabled=!1,this.renderer.shadowMap.type=og,this.renderer.toneMapping=Ll,this.renderer.toneMappingExposure=1.08,e.appendChild(this.renderer.domElement),this.labels=document.createElement("div"),this.labels.className="world-labels",e.appendChild(this.labels);try{const PFX=window.PixelFXLib?window.PixelFXLib.PixelFXManager:window.PixelFXManager;if(PFX)this.pixelFX=new PFX(e);}catch(err){console.error(err);};this.scene.background=new Ne("#080617"),this.scene.fog=new th("#120924",.012);const n=new La(this.renderer),r=new mP,s=n.fromScene(r,.04);this.scene.environment=s.texture,r.dispose(),n.dispose(),this.camera.position.copy(this.cameraTarget),this.camera.lookAt(this.lookTarget),this.scene.add(new RS("#9d8cc9","#1a1026",1.15));const a=new bl("#c9c2e8",2.1);a.position.set(-4,12,7),a.castShadow=!0,a.shadow.mapSize.set(1024,1024),a.shadow.camera.left=-12,a.shadow.camera.right=12,a.shadow.camera.top=12,a.shadow.camera.bottom=-12,a.shadow.bias=-.001,this.scene.add(a);const o=new bl("#7756e8",3);o.position.set(5,9,-5),this.scene.add(o),this.buildArena(),this.bossAnchor.position.set(0,2.2,-2.2),this.bossAnchor.scale.setScalar(1.85),this.bossAnchor.add(this.boss),this.scene.add(this.bossAnchor),this.buildCrowd(2000);this.initLegionSwords(),this.stars=this.buildSky(),this.ultraFastMode=!1,this.composer=new JE(this.renderer),this.composer.addPass(new YE(this.scene,this.camera)),this.bloomPass=new xs(new ue(256,256),.18,.4,0.98),this.composer.addPass(this.bloomPass),this.composer.addPass(new KE),this.observer=new ResizeObserver(()=>this.resize()),this.observer.observe(e),this.resize();const _uAudio=()=>{this.audio&&this.audio.setEnabled(!0);window.removeEventListener("click",_uAudio);window.removeEventListener("keydown",_uAudio);};window.addEventListener("click",_uAudio);window.addEventListener("keydown",_uAudio);window.raidGame=this,window.resetRaidGame=()=>this.resetAllData(),window.playerLeaveRoom=(u)=>this.playerLeaveRoom(u),window.addEventListener("pointerdown",()=>{if(window.raidGame&&window.raidGame.audio){window.raidGame.audio.initContext();if(!window.raidGame.audio.enabled)window.raidGame.audio.setEnabled(!0);}},{passive:!0});this.connectTikTokBridge(),this.resetAllData(),this.animate();}resize(){
+  this.shakeDuration>0&&(this.shakeDuration-=e,this.camera.position.x+=(Math.random()-.5)*this.shakeIntensity*(this.shakeDuration/1.8),this.camera.position.y+=(Math.random()-.5)*this.shakeIntensity*(this.shakeDuration/1.8)),this.state.camera==="Thiên kiếp"&&(this.camera.position.x+=Math.sin(s*50)*.025)}this.composer.render();try{if(this.pixelFX)this.pixelFX.updateAndRender(e);}catch(err){};this.publishTimer+=e,this.publishTimer>.2&&(this.publishTimer=0,this.state.fps=Math.min(60,Math.round(1/Math.max(e,.001))),this.publish())});this.host=e,this.update=t,this.renderer=new VE({antialias:!0,alpha:!1,powerPreference:"high-performance"}),this.renderer.setPixelRatio(Math.min(Math.max(window.devicePixelRatio||1,2.0),2.5)),this.renderer.shadowMap.enabled=!1,this.renderer.shadowMap.type=og,this.renderer.toneMapping=Ll,this.renderer.toneMappingExposure=1.08,e.appendChild(this.renderer.domElement),this.labels=document.createElement("div"),this.labels.className="world-labels",e.appendChild(this.labels);try{const PFX=window.PixelFXLib?window.PixelFXLib.PixelFXManager:window.PixelFXManager;if(PFX)this.pixelFX=new PFX(e);}catch(err){console.error(err);};this.scene.background=new Ne("#080617"),this.scene.fog=new th("#120924",.012);const n=new La(this.renderer),r=new mP,s=n.fromScene(r,.04);this.scene.environment=s.texture,r.dispose(),n.dispose(),this.camera.position.copy(this.cameraTarget),this.camera.lookAt(this.lookTarget),this.scene.add(new RS("#9d8cc9","#1a1026",1.15));const a=new bl("#c9c2e8",2.1);a.position.set(-4,12,7),a.castShadow=!0,a.shadow.mapSize.set(1024,1024),a.shadow.camera.left=-12,a.shadow.camera.right=12,a.shadow.camera.top=12,a.shadow.camera.bottom=-12,a.shadow.bias=-.001,this.scene.add(a);const o=new bl("#7756e8",3);o.position.set(5,9,-5),this.scene.add(o),this.buildArena(),this.bossAnchor.position.set(0,2.2,-2.2),this.bossAnchor.scale.setScalar(1.85),this.bossAnchor.add(this.boss),this.scene.add(this.bossAnchor),this.buildCrowd(2000);this.initLegionSwords(),this.stars=this.buildSky(),this.ultraFastMode=!1,this.composer=new JE(this.renderer),this.composer.addPass(new YE(this.scene,this.camera)),this.bloomPass=new xs(new ue(256,256),.18,.4,0.98),this.composer.addPass(this.bloomPass),this.composer.addPass(new KE),this.observer=new ResizeObserver(()=>this.resize()),this.observer.observe(e),this.resize();this.audio&&this.audio.setEnabled(!0);const _uAudio=()=>{this.audio&&this.audio.setEnabled(!0);window.removeEventListener("click",_uAudio);window.removeEventListener("keydown",_uAudio);};window.addEventListener("click",_uAudio);window.addEventListener("keydown",_uAudio);window.raidGame=this,window.resetRaidGame=()=>this.resetAllData(),window.playerLeaveRoom=(u)=>this.playerLeaveRoom(u),window.addEventListener("pointerdown",()=>{if(window.raidGame&&window.raidGame.audio){window.raidGame.audio.initContext();if(!window.raidGame.audio.enabled)window.raidGame.audio.setEnabled(!0);}},{passive:!0});this.connectTikTokBridge(),this.resetAllData(),this.animate();}resize(){
     const e=this.host.clientWidth,t=this.host.clientHeight;
     if(!e||!t)return;
     const aspect=e/t;
