@@ -110,6 +110,29 @@ wss.on('connection', (ws) => {
   });
 });
 
+
+function getUsername(data) {
+  if (!data) return 'Tu Sĩ';
+  const u = data.user || {};
+  return (
+    data.uniqueId ||
+    u.uniqueId ||
+    data.nickname ||
+    u.nickname ||
+    'Tu Sĩ'
+  ).replace(/^@/, '').trim() || 'Tu Sĩ';
+}
+
+function getCommentText(data) {
+  if (!data) return '';
+  return data.comment || data.content || '';
+}
+
+function getMsgId(data) {
+  if (!data) return crypto.randomUUID();
+  return data.msgId || (data.common && data.common.msgId) || crypto.randomUUID();
+}
+
 async function connectToTikTok(uniqueId) {
   if (tiktokConn) {
     disconnectFromTikTok();
@@ -128,17 +151,19 @@ async function connectToTikTok(uniqueId) {
     tiktokConn = new TikTokLiveConnection(uniqueId, {
       processInitialData: true,
       fetchRoomInfoOnConnect: true,
-      enableExtendedGiftInfo: true
-    });
+          });
 
     // 1. Bình luận / Chat (Người xem chém Boss - Tối ưu 100K tin nhắn)
     tiktokConn.on('chat', (data) => {
       stats.comments++;
+      const username = getUsername(data);
+      const comment = getCommentText(data);
+      console.log(`[Chat] @${username}: "${comment}"`);
       commentBatch.push({
-        id: data.msgId || crypto.randomUUID(),
+        id: getMsgId(data),
         type: 'comment',
-        username: data.uniqueId || data.nickname || 'Tu Sĩ',
-        comment: data.comment,
+        username: username,
+        comment: comment,
         value: 1,
         timestamp: Date.now()
       });
@@ -155,23 +180,21 @@ async function connectToTikTok(uniqueId) {
 
     // 2. Tặng quà / Xu (Kích hoạt Tuyệt Kỹ 5 cấp độ)
     tiktokConn.on('gift', (data) => {
-      // Chỉ tính khi chuỗi tặng quà hoàn tất hoặc quà đơn lẻ
-      if (data.giftType === 1 && !data.repeatEnd) {
-        return; // Đang trong chuỗi combo, chờ kết thúc chuỗi để lấy tổng xu
-      }
-
+      if (data.giftType === 1 && !data.repeatEnd) return;
       const diamonds = (data.diamondCount || 1) * (data.repeatCount || 1);
       let skill = 'small';
       if (diamonds >= 150) skill = 'ten_dragons';
       else if (diamonds >= 80) skill = 'single_dragon';
       else if (diamonds >= 45) skill = 'sword_rain';
       else if (diamonds >= 20) skill = 'giant_sword';
-      else if (diamonds >= 1) skill = 'small'; // Kích hoạt ngay từ 1 Xu (Hoa hồng, v.v.)
+      else if (diamonds >= 1) skill = 'small';
 
-      console.log(`[Gift] @${data.uniqueId} tặng ${data.giftName} (Tổng: ${diamonds} Xu) -> Kích hoạt [${skill}]!`);
-
+      stats.gifts++;
+      const username = getUsername(data);
+      const giftName = data.giftName || (data.giftDetails && data.giftDetails.giftName) || 'Quà';
+      console.log(`[Gift] @${username} tặng ${giftName} (${diamonds} Xu) -> [${skill}]!`);
       broadcast({
-        id: data.msgId || crypto.randomUUID(),
+        id: getMsgId(data) || crypto.randomUUID(),
         type: 'gift',
         username: data.uniqueId || data.nickname || 'Cao Thủ',
         skill: skill,

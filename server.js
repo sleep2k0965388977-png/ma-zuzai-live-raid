@@ -148,6 +148,29 @@ setInterval(() => {
   }
 }, 3000);
 
+
+function getUsername(data) {
+  if (!data) return 'Tu Sĩ';
+  const u = data.user || {};
+  return (
+    data.uniqueId ||
+    u.uniqueId ||
+    data.nickname ||
+    u.nickname ||
+    'Tu Sĩ'
+  ).replace(/^@/, '').trim() || 'Tu Sĩ';
+}
+
+function getCommentText(data) {
+  if (!data) return '';
+  return data.comment || data.content || '';
+}
+
+function getMsgId(data) {
+  if (!data) return crypto.randomUUID();
+  return data.msgId || (data.common && data.common.msgId) || crypto.randomUUID();
+}
+
 async function connectToTikTok(uniqueId) {
   if (tiktokConn) disconnectFromTikTok();
   currentUniqueId = uniqueId;
@@ -164,16 +187,18 @@ async function connectToTikTok(uniqueId) {
     tiktokConn = new TikTokLiveConnection(uniqueId, {
       processInitialData: true,
       fetchRoomInfoOnConnect: true,
-      enableExtendedGiftInfo: true
-    });
+          });
 
     tiktokConn.on('chat', (data) => {
       stats.comments++;
+      const username = getUsername(data);
+      const comment = getCommentText(data);
+      console.log(`[Chat] @${username}: "${comment}"`);
       commentBatch.push({
-        id: data.msgId || crypto.randomUUID(),
+        id: getMsgId(data),
         type: 'comment',
-        username: data.uniqueId || data.nickname || 'Tu Sĩ',
-        comment: data.comment,
+        username: username,
+        comment: comment,
         value: 1,
         timestamp: Date.now()
       });
@@ -196,12 +221,14 @@ async function connectToTikTok(uniqueId) {
       else if (diamonds >= 80) skill = 'single_dragon';
       else if (diamonds >= 45) skill = 'sword_rain';
       else if (diamonds >= 20) skill = 'giant_sword';
-      else if (diamonds >= 1) skill = 'small'; // Kích hoạt ngay từ 1 Xu (Hoa hồng, v.v.)
+      else if (diamonds >= 1) skill = 'small';
 
       stats.gifts++;
-      console.log(`[Gift] @${data.uniqueId} tặng ${data.giftName} (${diamonds} Xu) -> [${skill}]!`);
+      const username = getUsername(data);
+      const giftName = data.giftName || (data.giftDetails && data.giftDetails.giftName) || 'Quà';
+      console.log(`[Gift] @${username} tặng ${giftName} (${diamonds} Xu) -> [${skill}]!`);
       broadcast({
-        id: data.msgId || crypto.randomUUID(),
+        id: getMsgId(data) || crypto.randomUUID(),
         type: 'gift',
         username: data.uniqueId || data.nickname || 'Cao Thủ',
         skill,
@@ -217,10 +244,12 @@ async function connectToTikTok(uniqueId) {
     });
 
     tiktokConn.on('member', (data) => {
+      const username = getUsername(data);
+      console.log(`[Member] @${username} vừa vào phòng LIVE!`);
       broadcast({
-        id: crypto.randomUUID(),
+        id: getMsgId(data),
         type: 'follow',
-        username: data.uniqueId || data.nickname || 'Đạo Hữu Mới',
+        username: username,
         value: 1,
         timestamp: Date.now()
       });
