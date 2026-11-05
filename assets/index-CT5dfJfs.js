@@ -5107,6 +5107,7 @@ if(f){
     const dpr = Math.min(Math.max(window.devicePixelRatio||1, 2.0), 2.5);
     this.renderer.setPixelRatio(dpr);
     this.renderer.setSize(e,t);
+    this.composer.setPixelRatio(dpr);
     this.composer.setSize(e,t);
     const bw=Math.min(Math.round(e*.4),480),bh=Math.min(Math.round(t*.4),480);
     if(this.bloomPass)this.bloomPass.setSize(bw,bh);try{if(this.pixelFX)this.pixelFX.resize();}catch(err){}
