@@ -2415,6 +2415,20 @@
    - Bảng hướng dẫn quà tặng rộng rãi, chữ không tràn ra ngoài
    ========================================================================== */
 
+/* ==========================================================================
+   GIAO DIỆN CHUẨN TIKTOK LIVE STUDIO (1080x1920 & MOBILE)
+   - Căn lề an toàn cách viền màn hình (Safe Margins)
+   - Kích thước chữ, thanh máu, bảng Top, bảng hướng dẫn vừa vặn rõ nét (clamp)
+   - Không bị nhỏ li ti, không chạm viền màn hình
+   ========================================================================== */
+
+/* ==========================================================================
+   GIAO DIỆN CHUẨN TIKTOK LIVE STUDIO (1080x1920 & MOBILE)
+   - Căn lề an toàn cách viền màn hình (Safe Margins)
+   - Kích thước chữ, thanh máu, bảng Top, bảng hướng dẫn vừa vặn rõ nét (clamp)
+   - Không bị nhỏ li ti, không chạm viền màn hình
+   ========================================================================== */
+
 html, body, #root {
   margin: 0 !important;
   padding: 0 !important;
@@ -2529,14 +2543,16 @@ html, body, #root {
   width: 100% !important;
   height: 100% !important;
   display: block !important;
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: crisp-edges !important;
 }
 
-/* 1. Header Boss Ma Zuzai & Thanh Máu (Thu nhỏ thanh thoát, sát mép trên) */
+/* 1. HEADER BOSS MA ZUZAI & THANH MÁU (Căn lề an toàn cách đỉnh 22px, không dính sát viền) */
 .boss-hud {
   position: absolute !important;
-  top: 8px !important;
-  left: 8px !important;
-  right: 8px !important;
+  top: clamp(18px, 2.4vh, 28px) !important;
+  left: clamp(18px, 2.5vw, 28px) !important;
+  right: clamp(18px, 2.5vw, 28px) !important;
   width: auto !important;
   z-index: 30 !important;
   pointer-events: none !important;
@@ -2546,25 +2562,35 @@ html, body, #root {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  font-size: 7.5px !important;
-  letter-spacing: 0.4px !important;
+  font-size: clamp(9.5px, 1.15vw, 13px) !important;
+  letter-spacing: 0.6px !important;
   color: #d0bddd !important;
-  margin-bottom: 2px !important;
+  margin-bottom: 4px !important;
 }
 
-.boss-caption .boss-type-badge,
-.boss-caption .raid-timer-hud,
+.boss-caption .boss-type-badge {
+  font-size: clamp(9.5px, 1.15vw, 13px) !important;
+  font-weight: 800 !important;
+  color: #e9d5ff !important;
+  padding: 2.5px 8px !important;
+}
+
+.boss-caption .raid-timer-hud {
+  font-size: clamp(9.5px, 1.15vw, 13px) !important;
+  padding: 2.5px 8px !important;
+}
+
 .boss-caption .level-tag {
-  font-size: 7px !important;
-  padding: 1px 5px !important;
+  font-size: clamp(9px, 1vw, 12px) !important;
+  padding: 2.5px 8px !important;
 }
 
 .boss-hud h2 {
   font-family: 'Cinzel', 'Georgia', serif !important;
-  letter-spacing: 2px !important;
-  font-size: 17px !important;
-  margin: 1px 0 3px !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 14px rgba(217, 70, 239, 0.7) !important;
+  letter-spacing: 3px !important;
+  font-size: clamp(22px, 2.8vw, 32px) !important;
+  margin: 4px 0 7px !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 16px rgba(217, 70, 239, 0.7) !important;
   font-weight: 800 !important;
   text-align: left !important;
   color: #fff !important;
@@ -2572,10 +2598,11 @@ html, body, #root {
 }
 
 .boss-health {
-  height: 6px !important;
-  border-radius: 3px !important;
+  height: clamp(9px, 1.2vh, 14px) !important;
+  border-radius: 4px !important;
   position: relative !important;
-  margin-bottom: 3px !important;
+  margin-bottom: 6px !important;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.5) !important;
 }
 
 .health-meta {
@@ -2584,44 +2611,70 @@ html, body, #root {
   align-items: center !important;
   width: 100% !important;
   margin: 0 !important;
-  font-size: 7px !important;
+  font-size: clamp(9.5px, 1.15vw, 13px) !important;
 }
 
 .health-meta .phase-pill {
-  font-size: 7px !important;
-  padding: 1px 5px !important;
+  font-size: clamp(9px, 1vw, 12px) !important;
+  padding: 2px 8px !important;
 }
 
 .health-meta .hp-text {
-  font-size: 7.5px !important;
+  font-size: clamp(10px, 1.2vw, 13.5px) !important;
   font-weight: 800 !important;
   color: #fca5a5 !important;
 }
 
-/* 2. Bảng TOP TU SĨ LỰC CHIẾN (Thu nhỏ gọn, nằm ở góc bên PHẢI, cách xa thanh máu) */
-.top-cultivators-board,
-.arena-right-boards .top-cultivators-board {
+/* 2. CHỈ SỐ TU SĨ (BÊN TRÁI DƯỚI THANH MÁU) */
+.raid-side-hud {
   position: absolute !important;
-  top: 108px !important;
-  right: 8px !important;
-  left: auto !important;
-  width: 130px !important;
-  max-width: 42% !important;
+  left: clamp(18px, 2.5vw, 28px) !important;
+  top: clamp(122px, 13.5vh, 160px) !important;
+  display: flex !important;
+  gap: 6px !important;
   z-index: 28 !important;
-  pointer-events: auto !important;
-  padding: 4px 6px !important;
-  background: rgba(15, 11, 26, 0.88) !important;
+  pointer-events: none !important;
+}
+
+.raid-side-hud span {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  background: rgba(22, 15, 38, 0.88) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
   border: 1px solid rgba(168, 85, 247, 0.45) !important;
-  border-radius: 7px !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), 0 0 10px rgba(168, 85, 247, 0.2) !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  font-size: clamp(9px, 1vw, 11.5px) !important;
+  color: #ded1f0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* 3. BẢNG TOP TU SĨ LỰC CHIẾN (Kích thước rõ ràng, cách xa thanh máu, cách viền phải 20px) */
+.top-cultivators-board,
+.arena-right-boards .top-cultivators-board {
+  position: absolute !important;
+  top: clamp(122px, 13.5vh, 160px) !important;
+  right: clamp(18px, 2.5vw, 28px) !important;
+  left: auto !important;
+  width: clamp(185px, 22vw, 245px) !important;
+  max-width: 48% !important;
+  z-index: 28 !important;
+  pointer-events: auto !important;
+  padding: 8px 11px !important;
+  background: rgba(15, 11, 26, 0.92) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1.2px solid rgba(168, 85, 247, 0.5) !important;
+  border-radius: 9px !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.8), 0 0 14px rgba(168, 85, 247, 0.25) !important;
   display: block !important;
 }
 
 .top-cultivators-board .board-header {
-  margin-bottom: 3px !important;
-  padding-bottom: 2px !important;
+  margin-bottom: 5px !important;
+  padding-bottom: 4px !important;
   border-bottom: 1px solid rgba(168, 85, 247, 0.25) !important;
   display: flex !important;
   justify-content: space-between !important;
@@ -2629,114 +2682,114 @@ html, body, #root {
 }
 
 .top-cultivators-board .board-title {
-  font-size: 7.5px !important;
+  font-size: clamp(9.5px, 1.15vw, 12px) !important;
   font-weight: 800 !important;
-  letter-spacing: 0.3px !important;
+  letter-spacing: 0.5px !important;
 }
 
 .top-cultivators-board .board-badge {
-  font-size: 6.5px !important;
-  padding: 1px 4px !important;
+  font-size: clamp(8px, 0.9vw, 10px) !important;
+  padding: 2px 7px !important;
 }
 
 .top-cultivators-board .board-list {
-  gap: 2px !important;
+  gap: 4px !important;
 }
 
 .top-cultivators-board .cultivator-row {
-  padding: 1.5px 3px !important;
-  border-radius: 4px !important;
+  padding: 3px 6px !important;
+  border-radius: 5px !important;
 }
 
 .top-cultivators-board .cultivator-rank {
-  font-size: 7px !important;
-  width: 14px !important;
+  font-size: clamp(9px, 1vw, 11.5px) !important;
+  width: 18px !important;
 }
 
 .top-cultivators-board .cultivator-name {
-  font-size: 7.5px !important;
-  max-width: 55px !important;
+  font-size: clamp(9.5px, 1.1vw, 12px) !important;
+  max-width: 95px !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 
 .top-cultivators-board .cultivator-realm {
-  font-size: 6px !important;
+  font-size: clamp(7.5px, 0.85vw, 9.5px) !important;
 }
 
 .top-cultivators-board .power-val {
-  font-size: 7px !important;
+  font-size: clamp(9px, 1vw, 11.5px) !important;
 }
 
-/* 3. Bảng CÁCH ĐÁNH BOSS / TẶNG QUÀ HƯỚNG DẪN (Góc dưới cùng bên PHẢI) */
+/* 4. BẢNG CÁCH ĐÁNH BOSS / TẶNG QUÀ (Cách đáy 26px, cách viền phải 20px, chữ rộng rãi) */
 .raid-guide-board,
 .arena-right-boards .raid-guide-board {
   position: absolute !important;
   top: auto !important;
-  bottom: 12px !important;
-  right: 8px !important;
+  bottom: clamp(22px, 3.2vh, 38px) !important;
+  right: clamp(18px, 2.5vw, 28px) !important;
   left: auto !important;
-  width: 180px !important;
+  width: clamp(215px, 25vw, 280px) !important;
   max-width: 52% !important;
   z-index: 28 !important;
   pointer-events: auto !important;
-  padding: 5px 7px !important;
-  background: rgba(14, 9, 24, 0.9) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  border: 1px solid rgba(168, 85, 247, 0.45) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7) !important;
+  padding: 8px 12px !important;
+  background: rgba(14, 9, 24, 0.92) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1.2px solid rgba(168, 85, 247, 0.5) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.8) !important;
   display: block !important;
 }
 
 .raid-guide-board .board-header {
-  margin-bottom: 3px !important;
+  margin-bottom: 5px !important;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
 }
 
 .raid-guide-board .board-title {
-  font-size: 7.5px !important;
+  font-size: clamp(10px, 1.15vw, 12.5px) !important;
   font-weight: 800 !important;
 }
 
 .raid-guide-board .board-badge {
-  font-size: 6.5px !important;
-  padding: 1px 4px !important;
+  font-size: clamp(8px, 0.9vw, 10px) !important;
+  padding: 2px 7px !important;
 }
 
 .raid-guide-board .guide-list {
   display: flex !important;
   flex-direction: column !important;
-  gap: 2.5px !important;
+  gap: 4px !important;
 }
 
 .raid-guide-board .guide-row {
   display: flex !important;
   align-items: center !important;
-  gap: 4px !important;
+  gap: 6px !important;
   white-space: nowrap !important;
 }
 
 .raid-guide-board .guide-key {
-  font-size: 7px !important;
+  font-size: clamp(9px, 1vw, 11px) !important;
   font-weight: 700 !important;
-  padding: 1px 4px !important;
-  border-radius: 3px !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
   flex-shrink: 0 !important;
 }
 
 .raid-guide-board .guide-arrow {
-  font-size: 7px !important;
+  font-size: clamp(9px, 1vw, 11px) !important;
   color: #a855f7 !important;
   flex-shrink: 0 !important;
 }
 
 .raid-guide-board .guide-val {
-  font-size: 7.5px !important;
+  font-size: clamp(9.5px, 1.1vw, 12px) !important;
   color: #e2e8f0 !important;
   white-space: nowrap !important;
   overflow: visible !important;
@@ -2753,31 +2806,31 @@ html, body, #root {
   z-index: 20 !important;
 }
 
-/* 4. NÚT NỔI VÀ BẢNG ĐIỀU KHIỂN (TEST / TIKTOK CONNECT) */
+/* 5. NÚT NỔI ĐIỀU KHIỂN (Cách đáy 26px, cách viền trái 20px) */
 .floating-ctrl-btn {
   position: absolute !important;
-  bottom: 12px !important;
-  left: 10px !important;
+  bottom: clamp(22px, 3.2vh, 38px) !important;
+  left: clamp(18px, 2.5vw, 28px) !important;
   z-index: 45 !important;
-  background: rgba(24, 15, 42, 0.88) !important;
+  background: rgba(24, 15, 42, 0.9) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
-  border: 1px solid rgba(168, 85, 247, 0.5) !important;
+  border: 1.2px solid rgba(168, 85, 247, 0.55) !important;
   border-radius: 20px !important;
   color: #e9d5ff !important;
-  font-size: 10px !important;
+  font-size: clamp(11px, 1.2vw, 13.5px) !important;
   font-weight: 700 !important;
-  padding: 5px 10px !important;
+  padding: 7px 15px !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  gap: 4px !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7) !important;
+  gap: 5px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.75) !important;
   transition: all 0.2s !important;
 }
 
 .floating-ctrl-btn:hover {
-  background: rgba(168, 85, 247, 0.4) !important;
+  background: rgba(168, 85, 247, 0.45) !important;
   color: #fff !important;
   transform: scale(1.05) !important;
 }
@@ -2790,10 +2843,10 @@ html, body, #root {
   display: flex !important;
   flex-direction: column !important;
   position: fixed !important;
-  bottom: 10px !important;
-  right: 10px !important;
+  bottom: 14px !important;
+  right: 14px !important;
   left: auto !important;
-  width: min(370px, 92vw) !important;
+  width: min(400px, 92vw) !important;
   max-height: 82vh !important;
   overflow-y: auto !important;
   background: rgba(18, 12, 33, 0.96) !important;
@@ -2803,10 +2856,5 @@ html, body, #root {
   border-radius: 14px !important;
   box-shadow: 0 12px 50px rgba(0, 0, 0, 0.95) !important;
   z-index: 99999 !important;
-  padding: 12px !important;
-}
-
-canvas, .canvas-host canvas {
-  image-rendering: -webkit-optimize-contrast !important;
-  image-rendering: crisp-edges !important;
+  padding: 14px !important;
 }
