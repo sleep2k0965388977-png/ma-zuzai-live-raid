@@ -6180,9 +6180,7 @@ Mt.useEffect(()=>{
     P.jsx("i",{className:"phase-pin",style:{left:"50%"}}),
     P.jsx("i",{className:"phase-pin",style:{left:"75%"}})
   ]}),
-  P.jsxs("div",{className:"health-meta",children:[
-    P.jsxs("span",{className:"phase-pill",children:["🔥 GIAI ĐOẠN 0",n.phase," / 02 · ",jp[n.phase-1]||"Thức tỉnh"]}),
-    P.jsxs("span",{className:"hp-text",children:[Jr(n.hp)," ",P.jsxs("small",{children:["/ ",Jr(n.maxHp)," (",Math.round(n.hp/n.maxHp*100),"%)"]})]})
+  null
   ]})
 ]}),P.jsxs("div",{className:"raid-side-hud",children:[
   P.jsxs("span",{className:"alive-count-badge",title:"Số tu sĩ đang sống",children:[P.jsx(Kh,{size:12})," ",(n.players.filter(p=>!p.eliminated).length).toLocaleString()]}),

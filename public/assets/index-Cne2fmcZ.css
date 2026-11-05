@@ -2858,3 +2858,7 @@ html, body, #root {
   z-index: 99999 !important;
   padding: 14px !important;
 }
+
+.health-meta {
+  display: none !important;
+}
