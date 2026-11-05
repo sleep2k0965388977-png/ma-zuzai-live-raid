@@ -31,8 +31,8 @@ app.use(express.static(path.join(__dirname), {
 }));
 
 // Route fallback về index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 const server = http.createServer(app);
