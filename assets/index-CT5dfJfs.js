@@ -5104,12 +5104,12 @@ if(f){
       this.camera.fov = 76;
     }
     this.camera.updateProjectionMatrix();
-    const dpr = Math.min(Math.max(window.devicePixelRatio||1, 2.0), 2.5);
+    const dpr = (e >= 1000) ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.5);
     this.renderer.setPixelRatio(dpr);
-    this.renderer.setSize(e,t);
-    this.composer.setPixelRatio(dpr);
-    this.composer.setSize(e,t);
-    const bw=Math.min(Math.round(e*.4),480),bh=Math.min(Math.round(t*.4),480);
+    this.renderer.setSize(e, t);
+    this.composer.setPixelRatio(1.0);
+    this.composer.setSize(e, t);
+    const bw=256,bh=256;
     if(this.bloomPass)this.bloomPass.setSize(bw,bh);try{if(this.pixelFX)this.pixelFX.resize();}catch(err){}
   }
 triggerPixelFX(name,worldPos,options={}){
