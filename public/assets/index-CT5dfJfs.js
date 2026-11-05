@@ -4789,6 +4789,36 @@ version 0.8.3
     } else if(this.skill3MinTimer>=180){
       this.skill3MinTimer=0,this.trigger3MinBeam();
     }
+    // Streamer sleepchillk2 auto-attack every 30 seconds (nhay len danh skill binh luan hoac 1 xu)
+    this._streamerAttackTimer = (this._streamerAttackTimer || 0) + e;
+    if(this._streamerAttackTimer >= 30){
+      this._streamerAttackTimer = 0;
+      const _stName = (this.state.tiktokStreamer || (new URLSearchParams(window.location.search)).get("user") || "sleepchillk2").replace(/^@/,"").trim() || "sleepchillk2";
+      const _isSmallGift = Math.random() < 0.6;
+      if(this.events){
+        if(_isSmallGift){
+          this.events.receive({
+            id: crypto.randomUUID(),
+            type: "gift",
+            username: _stName,
+            skill: "small",
+            value: 1,
+            giftName: "Hoa Hồng",
+            timestamp: Date.now()
+          });
+        }else{
+          this.events.receive({
+            id: crypto.randomUUID(),
+            type: "comment",
+            username: _stName,
+            comment: "⚔️ Xuất trảm Ma Zuzai!",
+            value: 1,
+            timestamp: Date.now()
+          });
+        }
+      }
+    }
+
   }
   if(this.activeSpecialSkills&&this.activeSpecialSkills.length>0){
     for(let i=this.activeSpecialSkills.length-1;i>=0;i--){
