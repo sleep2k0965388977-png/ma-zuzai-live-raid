@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname), {
       res.setHeader('Content-Type', 'audio/mpeg');
       res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');
     } else if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
-      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
     }
   }
 }));
