@@ -5030,7 +5030,7 @@ if(f){
     if(!e||!t)return;
     const aspect=e/t;
     this.camera.aspect=aspect;
-    if(aspect<0.75){
+    if(aspect<0.68){
       // Portrait mode (iPhone 17 Pro Max / TikTok LIVE 9:16 ~ 9:19.5):
       // Adjust FOV dynamically so Boss statue + aura + chains are 100% visible and centered!
       const targetFov = Math.min(84, Math.max(72, 72 * (0.62 / aspect)));
