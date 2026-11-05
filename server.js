@@ -32,6 +32,9 @@ app.use(express.static(path.join(__dirname), {
 
 // Route fallback về index.html
 app.use((req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
