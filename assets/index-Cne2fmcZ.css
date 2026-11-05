@@ -2389,14 +2389,12 @@
 
 
 /* ==========================================================================
-   CHUẨN CHÍNH XÁC 100% TỶ LỆ 9:16 (TIKTOK LIVE STUDIO & OBS NATIVE)
-   - Khóa cứng chuẩn tỷ lệ dọc 9:16 (1080 x 1920)
-   - Bố cục HUD hoàn mỹ:
-     + Trên cùng: Tiêu đề Thượng Cổ Ma Tôn, Timer đếm ngược, Level 99, Chữ MA ZUZAI, Thanh Máu Neon
-     + Góc trên bên TRÁI: Khung Sát Thương Đánh Boss
-     + Góc trên bên PHẢI: Khung TOP Tu Sĩ Lực Chiến
-     + Góc dưới bên PHẢI: Khung Hướng Dẫn Cách Đánh Boss
-     + Khoảng giữa: Tượng Boss Ma Zuzai hiển thị toàn thân siêu sắc nét
+   CHUẨN CĂN CHỈNH BỐ CỤC 9:16 - KHÔNG BAO GIỜ BỊ ĐÈ HAY DÍNH CHỮ
+   - Thanh Boss Header trên cùng: Gồm Title, Timer, Level, Tên MA ZUZAI, Thanh máu và Giai đoạn
+   - Hai bên tách biệt hoàn toàn dưới thanh máu:
+     + Bên TRÁI: Khung Sát Thương Đánh Boss (gọn gàng, vừa vặn góc trái)
+     + Bên PHẢI: Khung TOP Tu Sĩ Lực Chiến (gọn gàng, vừa vặn góc phải)
+   - Ở giữa hoàn toàn thoáng đãng, không đè lên nhau, không đè lên mặt Boss!
    ========================================================================== */
 
 html, body, #root {
@@ -2492,12 +2490,12 @@ html.live-mode, body.live-mode,
   display: block !important;
 }
 
-/* 1. Header Boss Ma Zuzai & Thanh Máu (Căn chuẩn mép trên) */
+/* 1. Header Boss Ma Zuzai & Thanh Máu (Căn chuẩn sát mép trên) */
 .live-mode .boss-hud {
   position: absolute !important;
-  top: 14px !important;
-  left: 12px !important;
-  right: 12px !important;
+  top: 10px !important;
+  left: 10px !important;
+  right: 10px !important;
   width: auto !important;
   z-index: 30 !important;
   pointer-events: none !important;
@@ -2507,38 +2505,37 @@ html.live-mode, body.live-mode,
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  font-size: 8.5px !important;
+  font-size: 8px !important;
   letter-spacing: 0.8px !important;
   color: #d0bddd !important;
   margin-bottom: 2px !important;
 }
 
 .live-mode .boss-caption .boss-type-badge {
-  font-size: 8.5px !important;
+  font-size: 8px !important;
   font-weight: 800 !important;
   color: #e9d5ff !important;
 }
 
 .live-mode .boss-caption .raid-timer-hud {
-  font-size: 8.5px !important;
+  font-size: 8px !important;
 }
 
 .live-mode .boss-caption .level-tag {
-  font-size: 8px !important;
-  padding: 1px 6px !important;
+  font-size: 7.5px !important;
+  padding: 1px 5px !important;
 }
 
 .live-mode .boss-hud h2 {
   font-family: "Cinzel", "Georgia", serif !important;
   letter-spacing: 3px !important;
-  font-size: 24px !important;
-  margin: 3px 0 6px !important;
+  font-size: 22px !important;
+  margin: 2px 0 4px !important;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 16px rgba(217, 70, 239, 0.7) !important;
   font-weight: 800 !important;
   text-align: left !important;
   color: #fff !important;
   display: block !important;
-  visibility: visible !important;
 }
 
 .live-mode .boss-health {
@@ -2548,64 +2545,94 @@ html.live-mode, body.live-mode,
   margin-bottom: 4px !important;
 }
 
+/* Thanh Giai đoạn & Máu số hiển thị riêng biệt TRÊN cả 2 khung bên dưới */
 .live-mode .health-meta {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  font-size: 8px !important;
+  width: 100% !important;
+  margin: 2px 0 6px !important;
+  font-size: 7.5px !important;
 }
 
-/* 2. Khung SÁT THƯƠNG ĐÁNH BOSS (Góc trên bên TRÁI) */
+.live-mode .health-meta .phase-pill {
+  font-size: 7.5px !important;
+  padding: 2px 6px !important;
+}
+
+.live-mode .health-meta .hp-text {
+  font-size: 8px !important;
+  font-weight: 800 !important;
+  color: #fca5a5 !important;
+}
+
+/* 2. Khung SÁT THƯƠNG ĐÁNH BOSS (Nằm dưới thanh máu, góc bên TRÁI) */
 .live-mode .combat-dmg-frame {
   position: absolute !important;
-  top: 96px !important;
-  left: 10px !important;
+  top: 92px !important;
+  left: 0 !important;
   right: auto !important;
-  width: 155px !important;
-  max-width: 44% !important;
+  width: 148px !important;
+  max-width: 46% !important;
   z-index: 28 !important;
   pointer-events: none !important;
-  padding: 6px 9px !important;
+  padding: 5px 8px !important;
   background: linear-gradient(135deg, rgba(32, 10, 18, 0.92) 0%, rgba(18, 6, 12, 0.95) 100%) !important;
   border: 1.2px solid rgba(239, 68, 68, 0.85) !important;
   border-radius: 6px !important;
   box-shadow: 0 0 14px rgba(239, 68, 68, 0.4), 0 4px 14px rgba(0, 0, 0, 0.8) !important;
   display: block !important;
-  visibility: visible !important;
 }
 
-.live-mode .combat-dmg-frame .frame-title {
-  font-size: 9.5px !important;
+.live-mode .combat-dmg-frame .combat-title {
+  font-size: 8.5px !important;
+  font-weight: 800 !important;
 }
 
-/* 3. Bảng TOP TU SĨ LỰC CHIẾN (Góc trên bên PHẢI) */
+.live-mode .combat-dmg-frame .combat-waiting {
+  font-size: 7.5px !important;
+  padding: 3px 0 !important;
+}
+
+/* 3. Bảng TOP TU SĨ LỰC CHIẾN (Nằm dưới thanh máu, góc bên PHẢI - KHÔNG ĐÈ LÊN TRÁI HAY GIỮA) */
 .live-mode .top-cultivators-board,
 .live-mode .arena-right-boards .top-cultivators-board {
   position: absolute !important;
-  top: 96px !important;
+  top: 102px !important;
   right: 10px !important;
   left: auto !important;
-  width: 168px !important;
+  width: 155px !important;
   max-width: 47% !important;
   z-index: 28 !important;
   pointer-events: auto !important;
-  padding: 6px 8px !important;
-  background: rgba(15, 11, 26, 0.88) !important;
+  padding: 5px 7px !important;
+  background: rgba(15, 11, 26, 0.9) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
   border: 1.2px solid rgba(168, 85, 247, 0.5) !important;
   border-radius: 8px !important;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 12px rgba(168, 85, 247, 0.25) !important;
   display: block !important;
-  visibility: visible !important;
 }
 
 .live-mode .top-cultivators-board .board-title {
-  font-size: 9.5px !important;
+  font-size: 8.5px !important;
+  font-weight: 800 !important;
 }
 
 .live-mode .top-cultivators-board .board-badge {
-  font-size: 7.5px !important;
+  font-size: 7px !important;
+  padding: 1px 4px !important;
+}
+
+.live-mode .top-cultivators-board .empty-cultivators {
+  font-size: 8px !important;
+  padding: 6px 3px !important;
+  line-height: 1.3 !important;
+}
+
+.live-mode .top-cultivators-board .board-list {
+  gap: 3px !important;
 }
 
 /* 4. Bảng CÁCH ĐÁNH BOSS HƯỚNG DẪN (Góc dưới cùng bên PHẢI) */
@@ -2613,14 +2640,14 @@ html.live-mode, body.live-mode,
 .live-mode .arena-right-boards .raid-guide-board {
   position: absolute !important;
   top: auto !important;
-  bottom: 18px !important;
+  bottom: 14px !important;
   right: 10px !important;
   left: auto !important;
-  width: 165px !important;
+  width: 160px !important;
   max-width: 48% !important;
   z-index: 28 !important;
   pointer-events: auto !important;
-  padding: 6px 8px !important;
+  padding: 5px 7px !important;
   background: rgba(14, 9, 24, 0.9) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
@@ -2628,7 +2655,10 @@ html.live-mode, body.live-mode,
   border-radius: 8px !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7) !important;
   display: block !important;
-  visibility: visible !important;
+}
+
+.live-mode .raid-guide-board .board-title {
+  font-size: 8.5px !important;
 }
 
 .live-mode .world-labels {
