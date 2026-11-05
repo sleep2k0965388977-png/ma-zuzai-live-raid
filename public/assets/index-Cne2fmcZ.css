@@ -2408,6 +2408,13 @@
    - Tất cả thông số HUD căn chỉnh chính xác, không bị đè nhau
    ========================================================================== */
 
+/* ==========================================================================
+   GIAO DIỆN CHUẨN MÀN HÌNH ĐIỆN THOẠI (MOBILE / TIKTOK LIVE 9:16)
+   - Bỏ hoàn toàn bảng sát thương đánh boss
+   - Thu nhỏ thanh Boss, Top Tu Sĩ gọn gàng không đè nhau
+   - Bảng hướng dẫn quà tặng rộng rãi, chữ không tràn ra ngoài
+   ========================================================================== */
+
 html, body, #root {
   margin: 0 !important;
   padding: 0 !important;
@@ -2419,7 +2426,7 @@ html, body, #root {
   -moz-osx-font-smoothing: grayscale !important;
 }
 
-/* ẨN TOÀN BỘ GIAO DIỆN DESKTOP THỪA */
+/* ẨN TOÀN BỘ GIAO DIỆN DESKTOP THỪA VÀ BẢNG SÁT THƯƠNG */
 .topbar,
 .page-heading,
 .left-sidebar,
@@ -2428,7 +2435,8 @@ html, body, #root {
 .flow-note,
 .team-damage,
 .app-header,
-.live-mode-back-btn {
+.live-mode-back-btn,
+.combat-dmg-frame {
   display: none !important;
 }
 
@@ -2523,12 +2531,12 @@ html, body, #root {
   display: block !important;
 }
 
-/* 1. Header Boss Ma Zuzai & Thanh Máu (Sát mép trên) */
+/* 1. Header Boss Ma Zuzai & Thanh Máu (Thu nhỏ thanh thoát, sát mép trên) */
 .boss-hud {
   position: absolute !important;
-  top: 10px !important;
-  left: 10px !important;
-  right: 10px !important;
+  top: 8px !important;
+  left: 8px !important;
+  right: 8px !important;
   width: auto !important;
   z-index: 30 !important;
   pointer-events: none !important;
@@ -2538,33 +2546,25 @@ html, body, #root {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  font-size: 8px !important;
-  letter-spacing: 0.5px !important;
+  font-size: 7.5px !important;
+  letter-spacing: 0.4px !important;
   color: #d0bddd !important;
   margin-bottom: 2px !important;
 }
 
-.boss-caption .boss-type-badge {
-  font-size: 8px !important;
-  font-weight: 800 !important;
-  color: #e9d5ff !important;
-}
-
-.boss-caption .raid-timer-hud {
-  font-size: 8px !important;
-}
-
+.boss-caption .boss-type-badge,
+.boss-caption .raid-timer-hud,
 .boss-caption .level-tag {
-  font-size: 7.5px !important;
+  font-size: 7px !important;
   padding: 1px 5px !important;
 }
 
 .boss-hud h2 {
   font-family: 'Cinzel', 'Georgia', serif !important;
   letter-spacing: 2px !important;
-  font-size: clamp(16px, 4.5vw, 22px) !important;
-  margin: 2px 0 4px !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 16px rgba(217, 70, 239, 0.7) !important;
+  font-size: 17px !important;
+  margin: 1px 0 3px !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 14px rgba(217, 70, 239, 0.7) !important;
   font-weight: 800 !important;
   text-align: left !important;
   color: #fff !important;
@@ -2572,10 +2572,10 @@ html, body, #root {
 }
 
 .boss-health {
-  height: 8px !important;
+  height: 6px !important;
   border-radius: 3px !important;
   position: relative !important;
-  margin-bottom: 4px !important;
+  margin-bottom: 3px !important;
 }
 
 .health-meta {
@@ -2583,119 +2583,164 @@ html, body, #root {
   justify-content: space-between !important;
   align-items: center !important;
   width: 100% !important;
-  margin: 0 0 6px !important;
-  font-size: 7.5px !important;
+  margin: 0 !important;
+  font-size: 7px !important;
 }
 
 .health-meta .phase-pill {
-  font-size: 7.5px !important;
-  padding: 1px 6px !important;
+  font-size: 7px !important;
+  padding: 1px 5px !important;
 }
 
 .health-meta .hp-text {
-  font-size: 8px !important;
+  font-size: 7.5px !important;
   font-weight: 800 !important;
   color: #fca5a5 !important;
 }
 
-/* 2. Khung SÁT THƯƠNG ĐÁNH BOSS (Nằm dưới thanh máu, góc bên TRÁI) */
-.combat-dmg-frame {
-  position: absolute !important;
-  top: 94px !important;
-  left: 0 !important;
-  right: auto !important;
-  width: 145px !important;
-  max-width: 44% !important;
-  z-index: 28 !important;
-  pointer-events: none !important;
-  padding: 5px 8px !important;
-  background: linear-gradient(135deg, rgba(32, 10, 18, 0.92) 0%, rgba(18, 6, 12, 0.95) 100%) !important;
-  border: 1.2px solid rgba(239, 68, 68, 0.85) !important;
-  border-radius: 6px !important;
-  box-shadow: 0 0 14px rgba(239, 68, 68, 0.4), 0 4px 14px rgba(0, 0, 0, 0.8) !important;
-  display: block !important;
-}
-
-.combat-dmg-frame .combat-title {
-  font-size: 8px !important;
-  font-weight: 800 !important;
-}
-
-.combat-dmg-frame .combat-waiting {
-  font-size: 7.5px !important;
-  padding: 3px 0 !important;
-}
-
-.combat-dmg-frame .combat-dmg-val {
-  font-size: 18px !important;
-  font-weight: 900 !important;
-}
-
-/* 3. Bảng TOP TU SĨ LỰC CHIẾN (Nằm dưới thanh máu, góc bên PHẢI) */
+/* 2. Bảng TOP TU SĨ LỰC CHIẾN (Thu nhỏ gọn, nằm ở góc bên PHẢI, cách xa thanh máu) */
 .top-cultivators-board,
 .arena-right-boards .top-cultivators-board {
   position: absolute !important;
-  top: 104px !important;
-  right: 10px !important;
+  top: 108px !important;
+  right: 8px !important;
   left: auto !important;
-  width: 155px !important;
-  max-width: 46% !important;
+  width: 130px !important;
+  max-width: 42% !important;
   z-index: 28 !important;
   pointer-events: auto !important;
-  padding: 5px 8px !important;
-  background: rgba(15, 11, 26, 0.9) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  border: 1.2px solid rgba(168, 85, 247, 0.5) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 12px rgba(168, 85, 247, 0.25) !important;
+  padding: 4px 6px !important;
+  background: rgba(15, 11, 26, 0.88) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(168, 85, 247, 0.45) !important;
+  border-radius: 7px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), 0 0 10px rgba(168, 85, 247, 0.2) !important;
   display: block !important;
 }
 
+.top-cultivators-board .board-header {
+  margin-bottom: 3px !important;
+  padding-bottom: 2px !important;
+  border-bottom: 1px solid rgba(168, 85, 247, 0.25) !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
 .top-cultivators-board .board-title {
-  font-size: 8px !important;
+  font-size: 7.5px !important;
   font-weight: 800 !important;
+  letter-spacing: 0.3px !important;
 }
 
 .top-cultivators-board .board-badge {
-  font-size: 7px !important;
+  font-size: 6.5px !important;
   padding: 1px 4px !important;
 }
 
-.top-cultivators-board .empty-cultivators {
-  font-size: 7.5px !important;
-  padding: 6px 3px !important;
-  line-height: 1.3 !important;
-}
-
 .top-cultivators-board .board-list {
-  gap: 3px !important;
+  gap: 2px !important;
 }
 
-/* 4. Bảng CÁCH ĐÁNH BOSS HƯỚNG DẪN (Góc dưới cùng bên PHẢI) */
+.top-cultivators-board .cultivator-row {
+  padding: 1.5px 3px !important;
+  border-radius: 4px !important;
+}
+
+.top-cultivators-board .cultivator-rank {
+  font-size: 7px !important;
+  width: 14px !important;
+}
+
+.top-cultivators-board .cultivator-name {
+  font-size: 7.5px !important;
+  max-width: 55px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.top-cultivators-board .cultivator-realm {
+  font-size: 6px !important;
+}
+
+.top-cultivators-board .power-val {
+  font-size: 7px !important;
+}
+
+/* 3. Bảng CÁCH ĐÁNH BOSS / TẶNG QUÀ HƯỚNG DẪN (Góc dưới cùng bên PHẢI) */
 .raid-guide-board,
 .arena-right-boards .raid-guide-board {
   position: absolute !important;
   top: auto !important;
   bottom: 12px !important;
-  right: 10px !important;
+  right: 8px !important;
   left: auto !important;
-  width: 150px !important;
-  max-width: 46% !important;
+  width: 180px !important;
+  max-width: 52% !important;
   z-index: 28 !important;
   pointer-events: auto !important;
   padding: 5px 7px !important;
   background: rgba(14, 9, 24, 0.9) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
-  border: 1.2px solid rgba(168, 85, 247, 0.4) !important;
+  border: 1px solid rgba(168, 85, 247, 0.45) !important;
   border-radius: 8px !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7) !important;
   display: block !important;
 }
 
+.raid-guide-board .board-header {
+  margin-bottom: 3px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
 .raid-guide-board .board-title {
-  font-size: 8px !important;
+  font-size: 7.5px !important;
+  font-weight: 800 !important;
+}
+
+.raid-guide-board .board-badge {
+  font-size: 6.5px !important;
+  padding: 1px 4px !important;
+}
+
+.raid-guide-board .guide-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2.5px !important;
+}
+
+.raid-guide-board .guide-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  white-space: nowrap !important;
+}
+
+.raid-guide-board .guide-key {
+  font-size: 7px !important;
+  font-weight: 700 !important;
+  padding: 1px 4px !important;
+  border-radius: 3px !important;
+  flex-shrink: 0 !important;
+}
+
+.raid-guide-board .guide-arrow {
+  font-size: 7px !important;
+  color: #a855f7 !important;
+  flex-shrink: 0 !important;
+}
+
+.raid-guide-board .guide-val {
+  font-size: 7.5px !important;
+  color: #e2e8f0 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
 }
 
 .world-labels {
@@ -2708,26 +2753,26 @@ html, body, #root {
   z-index: 20 !important;
 }
 
-/* 5. NÚT NỔI VÀ BẢNG ĐIỀU KHIỂN (TEST / TIKTOK CONNECT) */
+/* 4. NÚT NỔI VÀ BẢNG ĐIỀU KHIỂN (TEST / TIKTOK CONNECT) */
 .floating-ctrl-btn {
   position: absolute !important;
-  bottom: 14px !important;
-  left: 12px !important;
+  bottom: 12px !important;
+  left: 10px !important;
   z-index: 45 !important;
   background: rgba(24, 15, 42, 0.88) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
-  border: 1.2px solid rgba(168, 85, 247, 0.5) !important;
+  border: 1px solid rgba(168, 85, 247, 0.5) !important;
   border-radius: 20px !important;
   color: #e9d5ff !important;
-  font-size: 11px !important;
+  font-size: 10px !important;
   font-weight: 700 !important;
-  padding: 6px 12px !important;
+  padding: 5px 10px !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  gap: 5px !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7) !important;
+  gap: 4px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7) !important;
   transition: all 0.2s !important;
 }
 
@@ -2745,10 +2790,10 @@ html, body, #root {
   display: flex !important;
   flex-direction: column !important;
   position: fixed !important;
-  bottom: 12px !important;
-  right: 12px !important;
+  bottom: 10px !important;
+  right: 10px !important;
   left: auto !important;
-  width: min(380px, 92vw) !important;
+  width: min(370px, 92vw) !important;
   max-height: 82vh !important;
   overflow-y: auto !important;
   background: rgba(18, 12, 33, 0.96) !important;
@@ -2758,5 +2803,5 @@ html, body, #root {
   border-radius: 14px !important;
   box-shadow: 0 12px 50px rgba(0, 0, 0, 0.95) !important;
   z-index: 99999 !important;
-  padding: 14px !important;
+  padding: 12px !important;
 }

@@ -6188,22 +6188,7 @@ Mt.useEffect(()=>{
   P.jsxs("span",{className:"alive-count-badge",title:"Số tu sĩ đang sống",children:[P.jsx(Kh,{size:12})," ",(n.players.filter(p=>!p.eliminated).length).toLocaleString()]}),
   P.jsxs("span",{className:"elim-count-badge",title:"Tổng số người đã bị loại",children:[P.jsx("span",{className:"skull-mini",children:"💀"})," ",(n.totalEliminated||0).toLocaleString()]}),
   P.jsxs("span",{children:[P.jsx($h,{size:12})," ",Math.round(n.energy),"%"]})
-]}),P.jsxs("div",{className:"combat-dmg-frame",children:[
-  P.jsxs("div",{className:"combat-dmg-header",children:[
-    P.jsxs("span",{className:"combat-title",children:["⚔️ SÁT THƯƠNG ĐÁNH BOSS"]}),
-    n.lastDamage>0?P.jsxs("span",{className:"combat-combo-badge",children:["🔥 x",n.combo]}):P.jsx("span",{className:"combat-live-dot",children:"● BÁO ĐỎ SẴN SÀNG"})
-  ]}),
-  n.lastDamage>0?P.jsxs("div",{className:"combat-dmg-body",key:n.combo,children:[
-    P.jsxs("div",{className:`combat-dmg-val ${n.lastDamage>=5000?"crit":""}`,children:[
-      P.jsx("span",{className:"minus",children:"−"}),
-      Jr(n.lastDamage),
-      P.jsx("span",{className:"dmg-unit",children:" DMG"})
-    ]})
-  ]}):P.jsxs("div",{className:"combat-dmg-idle",children:[
-    P.jsx("span",{className:"idle-icon",children:"⚡"}),
-    P.jsx("span",{children:"Đang chờ xuất chiêu đánh Boss…"})
-  ]})
-]}),
+]}),null,
 (n.lastEliminated>0&&(Date.now()-(n.elimBannerTimer||0)<5000))&&P.jsxs("div",{
   className:"elimination-alert-banner",
   children:[
@@ -6254,7 +6239,7 @@ Mt.useEffect(()=>{
       ]}),
       P.jsx("span",{className:"board-badge",children:"LIVE RANK"})
     ]}),
-    P.jsx("div",{className:"board-list",children:topList.length===0?P.jsx("div",{style:{padding:"18px 10px",textAlign:"center",color:"#c084fc",fontSize:"11.5px",fontWeight:700,fontStyle:"italic"},children:"⚔️ ĐANG CHỜ ĐẠO HỮU VÀO PHÒNG LIVE THAM CHIẾN..."}):topList.map((cp,cIdx)=>P.jsxs("div",{
+    P.jsx("div",{className:"board-list",children:topList.length===0?P.jsx("div",{style:{padding:"6px 4px",textAlign:"center",color:"#c084fc",fontSize:"7.5px",fontWeight:600,fontStyle:"italic"},children:"⚔️ Đang chờ đạo hữu tham chiến..."}):topList.map((cp,cIdx)=>P.jsxs("div",{
       key:cp.username,
       className:`cultivator-row rank-${cIdx+1}`,
       children:[
@@ -6284,17 +6269,17 @@ Mt.useEffect(()=>{
     P.jsxs("div",{className:"guide-row",children:[
       P.jsx("span",{className:"guide-key k-like",children:"Thả tim"}),
       P.jsx("span",{className:"guide-arrow",children:"➔"}),
-      P.jsx("span",{className:"guide-val",children:"Hồi máu & Năng lượng"})
+      P.jsx("span",{className:"guide-val",children:"Hồi máu & Tăng nộ"})
     ]}),
     P.jsxs("div",{className:"guide-row",children:[
       P.jsx("span",{className:"guide-key k-gift",children:"Tặng quà"}),
       P.jsx("span",{className:"guide-arrow",children:"➔"}),
-      P.jsx("span",{className:"guide-val",children:"Triệu hồi Rồng Tuyệt kỹ"})
+      P.jsx("span",{className:"guide-val",children:"Triệu hồi Thần Long"})
     ]}),
     P.jsxs("div",{className:"guide-row",children:[
       P.jsx("span",{className:"guide-key k-top",children:"Đua Top"}),
       P.jsx("span",{className:"guide-arrow",children:"➔"}),
-      P.jsx("span",{className:"guide-val",children:"Mở khóa Cánh Tiên Hiệp"})
+      P.jsx("span",{className:"guide-val",children:"Mở Cánh Tiên Hiệp"})
     ]})
   ]})
 ]})
